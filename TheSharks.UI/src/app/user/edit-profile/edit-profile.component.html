@@ -1,0 +1,58 @@
+<div class="columns m-2">
+    <div [class]="!(isHandset$ | async) ? 'column is-offset-one-fifth is-three-fifths' : 'column is-offset-one-fifth is-three-fifths column-margin'">
+        <div *ngIf="ready" class="stack-with-spacing">
+            <h1>PROFIEL</h1>
+            <div class="stack avatar-section">
+                <img [src]="imagePreview" alt="profilepicture" class="avatar-profile">
+                <ng-container *ngIf="editProfileForm.enabled">
+                    <button color="primary" mat-flat-button (click)="fileUploader.click()">
+                        Kies nieuwe profielfoto
+                    </button>
+                </ng-container>
+            </div>
+            <form [formGroup]="editProfileForm" class="stack">
+                <input #fileUploader type="file" accept=".jpg, .jpeg, .png" (change)="onImageSelect(fileUploader)">
+                <mat-form-field appearance="fill">
+                    <mat-label>Gebruikersnaam</mat-label>
+                    <input matInput type="text" formControlName="userName" maxlength="30">
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Naam</mat-label>
+                    <input matInput type="text" formControlName="firstName" maxlength="60">
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Achternaam</mat-label>
+                    <input matInput type="text" formControlName="lastName" maxlength="60">
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Telefoonnummer</mat-label>
+                    <input matInput type="text" formControlName="phoneNumber" maxlength="13">
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Beschrijving</mat-label>
+                    <textarea matInput formControlName="bio" maxlength="400"></textarea>
+                </mat-form-field>
+            </form>
+            <app-action-menu>
+                <app-action-menu-button color="warn" text="Je account verwijderen" *ngIf="!editProfileForm.enabled" 
+                    (cclick)="removeMyself()">
+                    delete
+                </app-action-menu-button>
+                <app-action-menu-button text="Bewerk profiel" (cclick)="onToggleEditMode()"
+                    *ngIf="!editProfileForm.enabled">
+                    edit
+                </app-action-menu-button>
+                <app-action-menu-button text="Annuleren" (cclick)="onToggleEditMode()" *ngIf="editProfileForm.enabled">
+                    cancel
+                </app-action-menu-button>
+                <app-action-menu-button #btnSave text="Opslaan" *ngIf="editProfileForm.enabled"
+                    (cclick)="onSaveProfile(); btnSave.disabled = true">
+                    save
+                </app-action-menu-button>
+            </app-action-menu>
+        </div>
+        <div *ngIf="!ready" class="loading-container">
+            <mat-spinner></mat-spinner>
+        </div>
+    </div>
+</div>

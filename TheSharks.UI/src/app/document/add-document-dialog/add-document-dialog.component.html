@@ -1,0 +1,25 @@
+<div class="dialog-container">
+    <h2 mat-dialog-title>
+        Document toevoegen
+    </h2>
+
+    <mat-dialog-content class="mat-typography">
+        <form [formGroup]="addDocumentForm" class="stack">
+            <mat-form-field appearance="fill">
+                <mat-label>Naam</mat-label>
+                <input matInput type="text" formControlName="name" maxlength="50">
+            </mat-form-field>
+            <mat-checkbox class="checkbox-spacing" formControlName="isImportant">
+                Is belangrijk?
+            </mat-checkbox>
+            <input type="file" #fileDropRef accept=".docx, .doc, .pdf" (change)="fileBrowseHandler(fileDropRef)" />
+            <button type="button" mat-flat-button (click)="fileDropRef.click()" color="accent">Bestand kiezen</button>
+            <span *ngIf="fileName">{{fileName}}</span>
+        </form>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+        <button mat-button matDialogClose>Annuleren</button>
+        <button mat-flat-button color="primary" (click)="save()" [disabled]="!addDocumentForm.valid">Uploaden</button>
+    </mat-dialog-actions>
+</div>

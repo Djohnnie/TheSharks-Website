@@ -1,0 +1,22 @@
+table {
+    width: 100%;
+}
+
+.checkbox-cell {
+    flex: 0 1 auto;
+    padding-right: 24px;
+}
+
+.button-cell {
+    flex-direction: row-reverse;
+}
+
+.mat-chip-list {
+    flex: 1 0 auto;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.column-margin {
+    margin-bottom: 6rem;
+}

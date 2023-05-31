@@ -1,0 +1,11 @@
+<h1 mat-dialog-title>Je account verwijderen</h1>
+<mat-dialog-content>
+    <p>Ben je zeker dat je je account wilt verwijderen?</p>
+    <p>Je zal niet meer kunnen aanmelden en je verliest zo de toegang tot de ledenpagina's van The Sharks.</p>
+    <br/>
+    <p>Deze actie kan niet ongedaan worden gemaakt!</p>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-dialog-close mat-button>Annuleren</button>
+    <button mat-flat-button color="warn" cdkFocusInitial (click)="onDelete()">Je account verwijderen</button>
+</mat-dialog-actions>

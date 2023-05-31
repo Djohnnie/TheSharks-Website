@@ -1,0 +1,75 @@
+<div class="columns m-2">
+    <div class="column is-8 is-offset-2">
+        <h1>ACTIVITEITEN</h1>
+        <ng-container *ngIf="activityList as activityList ; else loading">
+            <div class="card-stack">
+                <mat-card *ngFor="let activity of activityList.activities">
+                    <mat-card-title>
+                        <div class="mat-card-title-container">
+                            <div>{{activity.name}}</div>
+                        </div>
+                    </mat-card-title>
+                    <mat-card-content>
+                        <div class="columns is-deskthop is-gapless icon-table">
+                            <div class="column is-half icon-list">
+                                <div>
+                                    <mat-icon [color]="isActivityInFuture(activity) ? 'accent' : ''">
+                                        place
+                                    </mat-icon>
+                                    <span *ngIf="activity.locationLink">
+                                        <a [href]="activity.locationLink" target="_blank" (click)="$event.stopPropagation()">
+                                            {{activity.location}}
+                                        </a>
+                                    </span>
+                                    <span *ngIf="!activity.locationLink">
+                                        {{activity.location}}
+                                    </span>
+                                </div>
+                                <div>
+                                    <mat-icon [color]="isActivityInFuture(activity) ? 'accent' : ''">
+                                        event
+                                    </mat-icon>
+                                    {{activity.date.toLocaleDateString("nl-BE")}}
+                                </div>                                
+                                <div *ngIf="activity.tide">
+                                    <mat-icon [color]="isActivityInFuture(activity) ? 'accent' : ''">waves</mat-icon>
+                                    {{activity.tide}}
+                                </div>
+                            </div>
+                            <div class="column is-half icon-list">                                
+                                <div *ngIf="activity.departure">
+                                    <mat-icon [color]="isActivityInFuture(activity) ? 'accent' : ''">directions_car</mat-icon>
+                                    {{activity.departure.toLocaleTimeString("nl-BE", {hour: '2-digit', minute: '2-digit'})}}
+                                </div>
+                                <div *ngIf="activity.startTime || (activity.startTime && activity.endTime)">
+                                    <mat-icon [color]="isActivityInFuture(activity) ? 'accent' : ''">schedule</mat-icon>
+                                    {{activity.startTime.toLocaleTimeString("nl-BE", {hour: '2-digit', minute: '2-digit'})}}
+                                    {{activity.endTime ? " - " + activity.endTime.toLocaleTimeString("nl-BE", {hour: '2-digit', minute: '2-digit'}) : ""}}
+                                </div>
+                                <div *ngIf="activity.briefingTime">
+                                    <mat-icon [color]="isActivityInFuture(activity) ? 'accent' : ''">question_answer</mat-icon>
+                                    {{activity.briefingTime.toLocaleTimeString("nl-BE", {hour: '2-digit', minute: '2-digit'})}}
+                                </div>
+                                <div *ngIf="activity.atWater">
+                                    <mat-icon [color]="isActivityInFuture(activity) ? 'accent' : ''">pool</mat-icon>
+                                    {{activity.atWater.toLocaleTimeString("nl-BE", {hour: '2-digit', minute: '2-digit'})}}
+                                </div>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+
+                <mat-card *ngIf="activityList.activities.length === 0">
+                    <mat-card-content>Er zijn nog geen activiteiten gepland...</mat-card-content>
+                </mat-card>
+            </div>
+            <app-paginator [pageSize]="pageSize" [length]="activityList.totalRecords" (page)="onPageChanged($event)">
+            </app-paginator>
+        </ng-container>
+        <ng-template #loading>
+            <div class="loading-container">
+                <mat-spinner></mat-spinner>
+            </div>
+        </ng-template>
+    </div>
+</div>

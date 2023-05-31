@@ -1,0 +1,26 @@
+.mat-table {
+    margin-bottom: 1rem;
+}
+
+.mat-row {
+    cursor: pointer;
+}
+
+.shrink {
+    flex: 0 1 auto;
+    width: 6rem;
+}
+
+span {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.mat-row:hover {
+    background: whitesmoke;
+}
+
+.column-margin {
+    margin-bottom: 6rem;
+}

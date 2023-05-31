@@ -1,0 +1,29 @@
+<div class="columns m-2">
+    <div class="column is-8 is-offset-2">
+        <h1>Nieuwe rol</h1>
+        <form [formGroup]="roleForm">
+            <div class="stack">
+                <mat-form-field appearance="fill">
+                    <mat-label>Naam</mat-label>
+                    <input matInput type="text" formControlName="name" maxlength="30">
+                </mat-form-field>
+                <mat-checkbox formControlName="certificate">Rol als duikbrevet</mat-checkbox>
+                <h4 class="mt-4">Rechten</h4>
+                <ng-container formArrayName="claims">
+                    <ng-container *ngFor="let claim of roleClaims.controls; let i = index">
+                        <div class="checklist">
+                            <mat-checkbox [formControlName]="i">
+                                {{claimValues[i]}}
+                            </mat-checkbox>
+                        </div>
+                    </ng-container>
+                </ng-container>
+                <div class="sticky level p-4">
+                    <button [disabled]="!roleForm.valid" mat-flat-button color="accent" (click)="onSubmit()">
+                        Rol aanmaken
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

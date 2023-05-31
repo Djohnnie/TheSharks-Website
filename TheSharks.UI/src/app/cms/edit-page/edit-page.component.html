@@ -1,0 +1,126 @@
+<ng-container *ngIf="page as page; else loading">
+    <div class="columns m-2">
+        <div class="column is-one-quarter box center">
+            <ng-container *ngIf="componentLeft as component; else emptyLeft">
+                <ng-container [ngSwitch]="component.name">
+                    <button mat-icon-button color="warn" (click)="deleteComponent(component.position)"
+                        matTooltip="Verwijderen" matTooltipPosition="above">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                    <app-upcoming-activity [editMode]="true" *ngSwitchCase="componentTypes.UpcomingActivity">
+                    </app-upcoming-activity>
+                    <app-last-news-item *ngSwitchCase="componentTypes.NewsItem"></app-last-news-item>
+                    <app-display [contentString]="component.content"
+                        (change)="onComponentChange(component.position, $event)" *ngSwitchCase="componentTypes.Display"
+                        [editMode]="true"></app-display>
+                    <ckeditor *ngSwitchCase="componentTypes.Html" [editor]="editor" [data]="component.content"
+                        (change)="onEditorChange(component.position, $event)">
+                    </ckeditor>
+                </ng-container>
+            </ng-container>
+            <ng-template #emptyLeft>
+                <button mat-icon-button (click)="chooseComponent(left)" matTooltip="Links plaatsen">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </ng-template>
+        </div>
+        <div class="column is-half box">
+            <form class="stack" [formGroup]="editPageForm">
+                <h2>Pagina info</h2>
+                <mat-form-field appearance="fill">
+                    <mat-label>Titel</mat-label>
+                    <input matInput type="text" formControlName="title" maxlength="30">
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Link</mat-label>
+                    <input matInput type="text" formControlName="link" maxlength="60">
+                </mat-form-field>
+                <mat-checkbox class="checkbox-spacing" formControlName="isOnlyAvailableForMembers">
+                    Is enkel beschikbaar voor leden
+                </mat-checkbox>
+                <mat-checkbox class="checkbox-spacing" formControlName="isDefaultPage">
+                    Dit is de standaardpagina voor niet-leden
+                </mat-checkbox>
+                <mat-checkbox class="checkbox-spacing" formControlName="isDefaultPageForMembers">
+                    Dit is de standaardpagina voor leden
+                </mat-checkbox>
+                <h2>Inhoud</h2>
+                <mat-card>
+                    <div class="level m-2">
+                        <button mat-icon-button (click)="chooseComponent(0)" matTooltip="Component toevoegen"
+                            matTooltipPosition="right">
+                            <mat-icon>add</mat-icon>
+                        </button>
+                    </div>
+                    <button mat-flat-button></button>
+                    <ng-container *ngFor="let component of page.components; let i = index">
+                        <ng-container [ngSwitch]="component.name" *ngIf="component.position >= 0">
+                            <div>
+                                <button mat-icon-button (click)="moveComponent(i, -1)" [disabled]="!(i > 0)"
+                                    matTooltip="Verplaatsen naar boven" matTooltipPosition="above">
+                                    <mat-icon>expand_less</mat-icon>
+                                </button>
+                                <button mat-icon-button (click)="moveComponent(i, 1)"
+                                    matTooltip="Verplaatsen naar beneden" matTooltipPosition="above"
+                                    [disabled]="!(i < page.components.length - 1)">
+                                    <mat-icon>expand_more</mat-icon>
+                                </button>
+                                <button mat-icon-button color="warn" (click)="deleteComponent(component.position)"
+                                    matTooltip="Verwijderen" matTooltipPosition="above">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </div>
+                            <app-upcoming-activity [editMode]="true" *ngSwitchCase="componentTypes.UpcomingActivity">
+                            </app-upcoming-activity>
+                            <app-last-news-item *ngSwitchCase="componentTypes.NewsItem"></app-last-news-item>
+                            <app-display [contentString]="component.content" (change)="onComponentChange(i, $event)"
+                                *ngSwitchCase="componentTypes.Display" [editMode]="true"></app-display>
+                            <ckeditor *ngSwitchCase="componentTypes.Html" [editor]="editor" [data]="component.content"
+                                (change)="onEditorChange(i, $event)">
+                            </ckeditor>
+                            <div class="level m-2">
+                                <button mat-icon-button (click)="chooseComponent(component.position + 1)"
+                                    matTooltip="Component toevoegen" matTooltipPosition="right">
+                                    <mat-icon>add</mat-icon>
+                                </button>
+                            </div>
+                        </ng-container>
+                    </ng-container>
+                </mat-card>
+            </form>
+            <app-action-menu>
+                <app-action-menu-button [disabled]="(!editPageForm.valid && !loadingUpdate) || loadingUpdate"
+                    text="Opslaan" (cclick)="onSave()">save</app-action-menu-button>
+            </app-action-menu>
+        </div>
+        <div class="column is-one-quarter box center">
+            <ng-container *ngIf="componentRight as component; else emptyRight">
+                <ng-container [ngSwitch]="component.name">
+                    <button mat-icon-button color="warn" (click)="deleteComponent(component.position)"
+                        matTooltip="Verwijderen" matTooltipPosition="above">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                    <app-upcoming-activity [editMode]="true" *ngSwitchCase="componentTypes.UpcomingActivity">
+                    </app-upcoming-activity>
+                    <app-last-news-item *ngSwitchCase="componentTypes.NewsItem"></app-last-news-item>
+                    <app-display [contentString]="component.content"
+                        (change)="onComponentChange(component.position, $event)" *ngSwitchCase="componentTypes.Display"
+                        [editMode]="true"></app-display>
+                    <ckeditor *ngSwitchCase="componentTypes.Html" [editor]="editor" [data]="component.content"
+                        (change)="onEditorChange(component.position, $event)">
+                    </ckeditor>
+                </ng-container>
+            </ng-container>
+            <ng-template #emptyRight>
+                <button mat-icon-button (click)="chooseComponent(right)" matTooltip="Rechts plaatsen">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </ng-template>
+        </div>
+    </div>
+</ng-container>
+<ng-template #loading>
+    <div class="loading-container">
+        <mat-spinner></mat-spinner>
+    </div>
+</ng-template>

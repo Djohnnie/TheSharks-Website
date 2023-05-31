@@ -1,0 +1,30 @@
+<div class="columns m-2">
+    <div class="column is-8 is-offset-2">
+        <h1>Blogpost bewerken</h1>
+        <ng-container *ngIf="newsItem as ni; else loading">
+            <form class="stack" [formGroup]="titleForm">
+                <h3>Titel</h3>
+                <mat-form-field appearance="fill">
+                    <mat-label>Titel</mat-label>
+                    <input matInput type="text" formControlName="title" maxlength="60">
+                </mat-form-field>
+                <mat-checkbox class="checkbox-spacing" formControlName="membersOnly">
+                    Is enkel zichtbaar voor leden
+                </mat-checkbox>
+                <br>
+                <h3>Inhoud</h3>
+                <ckeditor [editor]="editor" [data]="ni.content" (change)="onChange($event)">
+                </ckeditor>
+                <div class="sticky level p-4">
+                    <button [disabled]="!titleForm.valid" mat-flat-button color="accent"
+                        (click)="onSubmit()">Opslaan</button>
+                </div>
+            </form>
+        </ng-container>
+        <ng-template #loading>
+            <div class="loading-container">
+                <mat-spinner></mat-spinner>
+            </div>
+        </ng-template>
+    </div>
+</div>

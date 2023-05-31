@@ -1,0 +1,40 @@
+<div class="columns m-2">
+    <div class="column is-8 is-offset-2 stack">
+        <h1>Nieuw lid</h1>
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="stack">
+            <mat-form-field appearance="fill">
+                <mat-label>
+                    Voornaam
+                </mat-label>
+                <input matInput type="text" formControlName="firstName" maxlength="60">
+                <!-- VRAGEN OF DIT GOED IS -->
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>
+                    Achternaam
+                </mat-label>
+                <input matInput type="text" formControlName="lastName" maxlength="60">
+                <!-- VRAGEN OF DIT GOED IS -->
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>
+                    Gebruikersnaam
+                </mat-label>
+                <input matInput type="text" formControlName="userName" maxlength="30">
+                <!-- VRAGEN OF DIT GOED IS -->
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>
+                    Email
+                </mat-label>
+                <input matInput type="email" formControlName="email" maxlength="60">
+            </mat-form-field>
+            <button mat-raised-button color="primary" [disabled]="(!registerForm.valid && !loading) || loading">
+                Registreer
+            </button>
+        </form>
+        <div *ngIf="loading" class="loading-container">
+            <mat-spinner></mat-spinner>
+        </div>
+    </div>
+</div>

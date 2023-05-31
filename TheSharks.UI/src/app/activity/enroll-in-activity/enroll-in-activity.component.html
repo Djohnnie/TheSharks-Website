@@ -1,0 +1,109 @@
+<div class="columns m-2">
+    <div class="column is-2">
+        <button mat-icon-button routerLink="/activities" routerLinkActive="active"
+                matTooltip="Terug" matTooltipPosition="right">
+            <mat-icon>
+                arrow_back
+            </mat-icon>
+        </button>
+    </div>
+    <div [class]="!(isHandset$ | async) ? 'column is-8' : 'column is-8 column-margin'">
+        <app-activity-details-only [activity]="activity" [showInfo]="false"></app-activity-details-only>
+        
+        <br>
+        <h1>Inschrijven voor activiteit</h1>
+
+        <div class="stack-with-spacing" [formGroup]="membersForm">
+
+            <mat-form-field appearance="fill">
+                <mat-label>Opmerkingen</mat-label>
+                <textarea matInput formControlName="remarks" rows="3" placeholder="Extra opmerkingen..."></textarea>
+            </mat-form-field>
+
+            <mat-checkbox *ngIf="isDiveActivity" class="is-dive-activity-margin" formControlName="isOpenWaterTest" 
+                [checked]="isOpenWaterTest" (change)="isOpenWaterTest = !isOpenWaterTest">Ik wil een openwaterproef doen</mat-checkbox>
+
+            <ng-container formArrayName="members">
+                <ng-container *ngFor="let member of members.controls; let i = index">
+                    <ng-container *ngTemplateOutlet="member.value.isMember ? memberTemplate : guestTemplate; context: { $implicit: member }">
+                        
+                    </ng-container>
+                    <ng-template #memberTemplate let-member>
+                        <mat-card [formGroupName]="i" class="enrollment-card">
+                            <h2>Lid</h2>
+                            {{member.value.name}}
+                            <button mat-icon-button (click)="deleteEnrollment(i)">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                            <ng-container *ngIf="isDiveActivity">
+                                <mat-checkbox formControlName="asDiver" (change)="true" #checkBox>Als duiker</mat-checkbox>
+                                <span>
+                                    <mat-form-field class="margin open-water-test-formfield" appearance="fill" *ngIf="isOpenWaterTest && checkBox.checked">
+                                        <mat-label>Kies een openwaterproef</mat-label>
+                                        <mat-select matNativeControl formControlName="openWaterTestId">                                            
+                                            <mat-option>Geen openwaterproef voor dit lid</mat-option>
+                                            <ng-container *ngFor="let openWaterTest of getOpenWaterTestsForMember(member.value.registreeId)">
+                                                <mat-option [value]="openWaterTest.id">{{openWaterTest.title}}</mat-option>
+                                            </ng-container>
+                                        </mat-select>
+                                        <mat-icon class="chip-icon" color="accent" matPrefix matTooltip="Meer informatie" matTooltipPosition="below" 
+                                            (click)="loadOpenWaterTestInfo($event, member.value.openWaterTestId)">info</mat-icon>
+                                    </mat-form-field>
+                                </span>
+                            </ng-container>
+                        </mat-card>
+                      </ng-template>
+                      
+                      <ng-template #guestTemplate let-member>
+                        <mat-card [formGroupName]="i" class="enrollment-card">
+                            <h2>Gast</h2>
+                            <button mat-icon-button (click)="deleteEnrollment(i)">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                            <mat-form-field appearance="fill">
+                                <mat-label>Naam</mat-label>
+                                <input matInput type="text" formControlName="registree" maxlength="60">
+                            </mat-form-field>
+                            <ng-container *ngIf="isDiveActivity">
+                                <mat-checkbox formControlName="asDiver" (change)="true" #checkBox>Als duiker</mat-checkbox>
+                                <mat-form-field class="margin" appearance="fill" *ngIf="checkBox.checked">
+                                    <mat-label>Brevet</mat-label>
+                                    <mat-select matNativeControl formControlName="diveCertificate">
+                                        <ng-container *ngFor="let certificate of diveCertificatesList">
+                                            <mat-option [value]="certificate.name">{{certificate.name}}</mat-option>
+                                        </ng-container>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field class="open-water-test-formfield" appearance="fill" *ngIf="isOpenWaterTest && checkBox.checked">
+                                    <mat-label>Kies een openwaterproef</mat-label>
+                                    <mat-select matNativeControl formControlName="openWaterTestId">
+                                        <mat-option>Geen openwaterproef voor deze gast</mat-option>
+                                        <ng-container *ngFor="let openWaterTest of openWaterTests">
+                                            <mat-option [value]="openWaterTest.id">{{openWaterTest.title}}</mat-option>
+                                        </ng-container>
+                                    </mat-select>
+                                    <mat-icon class="chip-icon" color="accent" matPrefix matTooltip="Meer informatie" matTooltipPosition="below" 
+                                        (click)="loadOpenWaterTestInfo($event, member.value.openWaterTestId)">info</mat-icon>
+                                </mat-form-field>
+                            </ng-container>
+                        </mat-card>
+                    </ng-template>
+                </ng-container>
+            </ng-container>
+            <app-action-menu>
+                <app-action-menu-button [disabled]="members.controls.length == 0 || loading"
+                    text="Inschrijving bevestigen" (cclick)="onSubmit()">save</app-action-menu-button>
+                <app-action-menu-button [disabled]="loading"
+                    text="Extra gast inschrijven" (cclick)="addGuest()">face</app-action-menu-button>
+                <app-action-menu-button [disabled]="loading"
+                    text="Extra lid inschrijven" (cclick)="chooseMember()">assignment_ind</app-action-menu-button>
+            </app-action-menu>
+        </div>
+
+        <ng-container *ngIf="loading">
+            <div class="loading-container">
+                <mat-spinner></mat-spinner>
+            </div>
+        </ng-container>
+    </div>
+</div>

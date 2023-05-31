@@ -1,0 +1,56 @@
+table {
+    width: 100%;
+}
+
+.checkbox-cell {
+    flex: 0 1 auto;
+    padding-right: 24px;
+}
+
+.button-cell {
+    flex-direction: row-reverse;
+}
+
+.right {
+    flex: 0 1 auto;
+    justify-content: center;
+    width: 3rem;
+}
+
+.mat-form-field {
+    width: 100%;
+}
+
+
+.image-cell {
+
+    justify-content: flex-start;
+    gap: 1rem;
+
+    span {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+}
+
+.chip-icon {
+    height: 20px;
+    width: 20px;
+    font-size: 20px;
+    margin-right: 5px;
+}
+
+.column-margin {
+    margin-bottom: 6rem;
+}
+
+.mat-chip-list {
+    flex: 1 0 auto;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.clickable-chip {
+    cursor: pointer;
+}

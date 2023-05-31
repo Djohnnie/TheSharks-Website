@@ -1,0 +1,43 @@
+<div class="columns m-2">
+    <div  [class]="!(isHandset$ | async) ? 'column is-8 is-offset-2' : 'column is-8 is-offset-2 column-margin'">
+        <h1>PAGINA'S</h1>
+        <ng-container *ngIf="pageList as pages; else loading">
+            <div class="stack-with-spacing">
+                <mat-card *ngFor="let page of pages">
+                    <span>{{page.title}} {{page.link === null ? "(Geen link)" : ""}}</span>
+                    <mat-card-actions align="end">
+                        <button mat-button color="accent" [routerLink]="['/editPage', page.link]"
+                            routerLinkActive="active">
+                            Bewerken
+                        </button>
+                        <button mat-icon-button [routerLink]="['/page', page.link]" routerLinkActive="active">
+                            <mat-icon>open_in_new</mat-icon>
+                        </button>
+                        <button mat-icon-button [matMenuTriggerFor]="pageMenu">
+                            <mat-icon>more_vert</mat-icon>
+                        </button>
+                        <mat-menu #pageMenu>
+                            <button mat-menu-item (click)="onDelete(page.id)">
+                                <mat-icon color="warn">delete</mat-icon>
+                                <span>Verwijderen</span>
+                            </button>
+                        </mat-menu>
+                    </mat-card-actions>
+                </mat-card>
+                <mat-card *ngIf="!pages.length">
+                    Geen pagina's beschikbaar
+                </mat-card>
+            </div>
+            <app-action-menu>
+                <app-action-menu-button (cclick)="openAddPageDialog()" text="Nieuwe pagina">
+                    add_circle
+                </app-action-menu-button>
+            </app-action-menu>
+        </ng-container>
+        <ng-template #loading>
+            <div class="loading-container">
+                <mat-spinner></mat-spinner>
+            </div>
+        </ng-template>
+    </div>
+</div>

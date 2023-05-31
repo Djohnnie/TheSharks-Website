@@ -1,0 +1,31 @@
+<div class="columns m-2">
+    <div class=" column is-offset-one-fifth is-three-fifths">
+        <div *ngIf="ready" class="stack-with-spacing">
+            <h1>OPENWATERPROEF TOEVOEGEN</h1>
+            <form [formGroup]="addOpenWaterTestForm" (ngSubmit)="onSubmit()" class="stack">
+                <mat-form-field appearance="fill">
+                    <mat-label>Titel</mat-label>
+                    <input matInput type="text" formControlName="title" maxlength="120">
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Toepasselijk voor groep</mat-label>
+                    <mat-select matNativeControl formControlName="diveCertificate">
+                        <ng-container *ngFor="let certificate of diveCertificatesList">
+                            <mat-option [value]="certificate.name">{{certificate.name}}</mat-option>
+                        </ng-container>
+                    </mat-select>
+                </mat-form-field>
+                <ckeditor [editor]="editor" [data]="addOpenWaterTestForm.value.content"
+                    maxlength="10000" (change)="onEditorChange($event)">
+                </ckeditor>
+                <br>
+                <button mat-raised-button color="primary" [disabled]="!addOpenWaterTestForm.valid || emptyContent || !ready">
+                    Opslaan
+                </button>
+            </form>
+        </div>
+        <div *ngIf="!ready" class="loading-container">
+            <mat-spinner></mat-spinner>
+        </div>
+    </div>
+</div>

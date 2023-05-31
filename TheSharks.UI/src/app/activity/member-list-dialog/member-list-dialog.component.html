@@ -1,0 +1,23 @@
+<div class="dialog-container">
+    <h1 mat-dialog-title>Selecteer lid</h1>
+    <mat-dialog-content class="stack">
+        <div class="dialog-content-container">
+            <ng-container *ngIf="filteredList as members; else loading">
+                <mat-form-field appearance="fill">
+                    <mat-label>Zoeken...</mat-label>
+                    <input matInput type="text" [formControl]="search" maxlength="30">
+                </mat-form-field>
+                <mat-selection-list [multiple]="false" (selectionChange)="onSelect($event)">
+                    <mat-list-option *ngFor="let member of members" [value]="member">
+                        {{member.firstName}} {{member.lastName}}
+                    </mat-list-option>
+                </mat-selection-list>
+            </ng-container>
+            <ng-template #loading>
+                <div class="loading">
+                    <mat-spinner></mat-spinner>
+                </div>
+            </ng-template>
+        </div>
+    </mat-dialog-content>
+</div>

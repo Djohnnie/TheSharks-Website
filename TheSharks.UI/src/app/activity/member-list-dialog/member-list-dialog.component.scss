@@ -1,0 +1,17 @@
+.loading {
+    display: flex;
+    justify-content: center;
+}
+
+.dialog-container {
+    // width: 25vw;
+    // max-width: 25vw;
+
+    .dialog-content-container {
+        height: 22rem;
+    }
+
+    .mat-form-field {
+        width: 100%;
+    }
+}

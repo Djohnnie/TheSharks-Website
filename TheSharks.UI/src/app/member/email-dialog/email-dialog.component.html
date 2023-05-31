@@ -1,0 +1,17 @@
+<h1 mat-dialog-title>Email opstellen</h1>
+<mat-dialog-content class="mat-typography">
+    <form [formGroup]="emailForm" class="stack">
+        <mat-form-field appearance="fill">
+            <mat-label>Onderwerp</mat-label>
+            <input matInput type="text" formControlName="subject" maxlength="60">
+        </mat-form-field>
+        <ckeditor [editor]="editor" [data]="emailForm.value.message"
+                  maxlength="10000" (change)="onEditorChange($event)">
+        </ckeditor>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Annuleren</button>
+    <button mat-flat-button color="primary" (click)="sendEmail()"
+        [disabled]="!emailForm.valid || emptyMessage || loading">Verstuur</button>
+</mat-dialog-actions>

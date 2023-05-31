@@ -1,0 +1,53 @@
+<div class="columns m-2">
+    <div [class]="!(isHandset$ | async) ? 'column is-8 is-offset-2' : 'column is-8 is-offset-2 column-margin'">
+        <h1>ROLLEN</h1>
+        <ng-container *ngIf="roles as roles; else loading">
+            <ng-container *ngIf="roles.length; else empty">
+                <table mat-table [dataSource]="roles" class="mat-elevation-z3">
+                    <ng-container matColumnDef="name">
+                        <mat-header-cell *matHeaderCellDef>Naam</mat-header-cell>
+                        <mat-cell *matCellDef="let role">
+                            <span>
+                                {{role.name}}
+                            </span>
+                            <mat-chip-list>
+                                <ng-container *ngIf="role.memberCount > 1">
+                                    <mat-chip>                                        
+                                        {{role.memberCount}} leden
+                                    </mat-chip>
+                                </ng-container>
+                                <ng-container *ngIf="role.memberCount == 1">
+                                    <mat-chip>                                        
+                                        {{role.memberCount}} lid
+                                    </mat-chip>
+                                </ng-container>
+                                <mat-chip *ngIf="role.memberCount == 0" class="clickable-chip" color="warn" selected
+                                    (click)="openDialog(role)">
+                                    <mat-icon>delete</mat-icon>
+                                </mat-chip>
+                            </mat-chip-list>
+                        </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="columns"></mat-header-row>
+                    <mat-row matRipple *matRowDef="let role; columns: columns;" [routerLink]="['/roles', role.id]"
+                        routerLinkActive="active">
+                    </mat-row>
+                </table>
+            </ng-container>
+            <ng-template #empty>
+                <mat-card>Er zijn nog geen rollen</mat-card>
+            </ng-template>
+            <app-action-menu>
+                <app-action-menu-button text="Nieuwe rol" link="/add-role">
+                    add_circle
+                </app-action-menu-button>
+            </app-action-menu>
+        </ng-container>
+        <ng-template #loading>
+            <div class="loading-container">
+                <mat-spinner></mat-spinner>
+            </div>
+        </ng-template>
+    </div>
+</div>

@@ -1,0 +1,37 @@
+<div class="dialog-container">
+    <h2 mat-dialog-title>
+        Foto's toevoegen
+    </h2>
+
+    <mat-dialog-content class="mat-typography">
+        <div class="dialog-content-container">
+            <div class="dropzone" picturednd (droppedFiles)="filesDropped($event)">
+                <div>
+                    <span class="vertical-center-helper"></span>
+                    <mat-icon mat-list-icon>cloud_upload</mat-icon>
+                </div>
+                <input type="file" #fileDropRef id="fileDropRef" accept=".jpg, .jpeg, .png" multiple
+                    (change)="fileBrowseHandler($event)" />
+                <h3>Sleep en drop een bestand</h3>
+                <h3>Of</h3>
+                <button mat-flat-button (click)="fileDropRef.click()" color="accent">Bestand kiezen</button>
+            </div>
+
+            <div class="files-list columns is-multiline">
+                <div class="single-file column is-one-third" *ngFor="let file of files; let i = index">
+                    <div class="imagePreview">
+                        <img [src]="file.content">
+                        <button mat-mini-fab color="warn" (click)="deleteFile(i)">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+        <button mat-button (click)="close()">Annuleren</button>
+        <button mat-flat-button color="primary" (click)="save()" [disabled]="!files.length">Uploaden</button>
+    </mat-dialog-actions>
+</div>

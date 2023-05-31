@@ -1,0 +1,16 @@
+<div class="paginator">
+    <button mat-icon-button (click)="onPageChanged(-1)" [disabled]="currentPage <= 1">
+        <mat-icon>chevron_left</mat-icon>
+    </button>
+    <span *ngIf="isHandset$ | async; else notHandset">
+        {{currentPage}} / {{pages}}
+    </span>
+    <ng-template #notHandset>
+        <span>
+            Pagina {{currentPage}} van {{pages}}
+        </span>
+    </ng-template>
+    <button mat-icon-button (click)="onPageChanged(1)" [disabled]="currentPage >= pages!">
+        <mat-icon>chevron_right</mat-icon>
+    </button>
+</div>

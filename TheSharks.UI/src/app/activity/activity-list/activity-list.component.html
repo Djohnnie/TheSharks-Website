@@ -1,0 +1,149 @@
+<div class="columns m-2">
+    <div [class]="!(isHandset$ | async) ? 'column is-8 is-offset-2' : 'column is-8 is-offset-2 column-margin'">
+        <h1>ACTIVITEITEN</h1>
+        <mat-accordion>
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Filters
+                    </mat-panel-title>
+                    <mat-panel-description class="align-end">
+                        <mat-icon>filter_alt</mat-icon>
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+                <form class="stack-with-spacing" [formGroup]="filterForm">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Op maand</mat-label>
+                        <input matInput [matDatepicker]="picker" formControlName="month">
+                        <mat-hint>MM/YYYY</mat-hint>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker touchUi startView="year"
+                            (monthSelected)="setMonthAndYear($event, picker)">
+                        </mat-datepicker>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Op type</mat-label>
+                        <mat-select matNativeControl formControlName="type">
+                            <mat-option value="">Alle</mat-option>
+                            <mat-option value="dive">Duik</mat-option>
+                            <mat-option value="event">Evenement</mat-option>
+                            <mat-option value="boardmeeting">Bestuursvergadering</mat-option>
+                            <mat-option value="monitorBoard">Monitorsraad</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <button mat-flat-button color="accent" (click)="onFilter()">Filteren</button>
+                    <button mat-button color="accent" (click)="onClearFilters()">Filters wissen</button>
+                </form>
+            </mat-expansion-panel>
+        </mat-accordion>
+        <ng-container *ngIf="activityList as activityList ; else loading">
+            <div class="card-stack">
+                <mat-card *ngFor="let activity of activityList.activities" class="clickable"
+                    [routerLink]="['/activities', activity.activityType, activity.id]">
+                    <mat-card-title>
+                        <div class="mat-card-title-container">
+                            <div>{{activity.name}}</div>                            
+                        </div>
+                    </mat-card-title>
+                    <mat-card-content>
+                        <div class="columns is-deskthop is-gapless icon-table">
+                            <div class="column is-half icon-list">                                
+                                <div>
+                                    <mat-icon [color]="isActivityInFuture(activity) ? 'accent' : ''">
+                                        place
+                                    </mat-icon>
+                                    <span *ngIf="activity.locationLink">
+                                        <a [href]="activity.locationLink" target="_blank" (click)="$event.stopPropagation()">
+                                            {{activity.location}}
+                                        </a>
+                                    </span>
+                                    <span *ngIf="!activity.locationLink">
+                                        {{activity.location}}
+                                    </span>
+                                </div>
+                                <div>
+                                    <mat-icon [color]="isActivityInFuture(activity) ? 'accent' : ''">
+                                        event
+                                    </mat-icon>
+                                    {{activity.date.toLocaleDateString("nl-BE")}}
+                                </div>
+                                <div>
+                                    <mat-icon [color]="isActivityInFuture(activity) ? 'accent' : ''">
+                                        badge
+                                    </mat-icon>
+                                    {{activity.responsibleFirstName}} {{activity.responsibleLastName}}
+                                </div>
+                            </div>
+                            <div class="column is-half icon-list">                                
+                                <div *ngIf="activity.departure">
+                                    <mat-icon [color]="isActivityInFuture(activity) ? 'accent' : ''">directions_car</mat-icon>
+                                    {{activity.departure.toLocaleTimeString("nl-BE", {hour: '2-digit', minute: '2-digit'})}}
+                                </div>
+                                <div *ngIf="activity.startTime || (activity.startTime && activity.endTime)">
+                                    <mat-icon [color]="isActivityInFuture(activity) ? 'accent' : ''">schedule</mat-icon>
+                                    {{activity.startTime.toLocaleTimeString("nl-BE", {hour: '2-digit', minute: '2-digit'})}}
+                                    {{activity.endTime ? " - " + activity.endTime.toLocaleTimeString("nl-BE", {hour: '2-digit', minute: '2-digit'}) : ""}}
+                                </div>
+                                <div *ngIf="activity.briefingTime">
+                                    <mat-icon [color]="isActivityInFuture(activity) ? 'accent' : ''">question_answer</mat-icon>
+                                    {{activity.briefingTime.toLocaleTimeString("nl-BE", {hour: '2-digit', minute: '2-digit'})}}
+                                </div>
+                                <div *ngIf="activity.atWater">
+                                    <mat-icon [color]="isActivityInFuture(activity) ? 'accent' : ''">pool</mat-icon>
+                                    {{activity.atWater.toLocaleTimeString("nl-BE", {hour: '2-digit', minute: '2-digit'})}}
+                                </div>
+                                <div *ngIf="activity.tide">
+                                    <mat-icon [color]="isActivityInFuture(activity) ? 'accent' : ''">waves</mat-icon>
+                                    {{activity.tide}}
+                                </div>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                    <mat-card-footer *ngIf="activity.memberCount !== null">
+                        <div class="mat-card-footer-container">
+                            <div>
+                                <mat-icon class="mat-icon-people" [color]="isActivityInFuture(activity) ? 'accent' : ''">people</mat-icon>
+                                {{activity.memberCount === 0 && isActivityInFuture(activity) ? "Nog geen" : activity.memberCount === 0 ? "Geen" : activity.memberCount}} {{activity.memberCount === 1 ? "inschrijving" : "inschrijvingen"}}
+                            </div>
+                            <div class="fill"></div>
+                            <div>
+                                <button *ngIf="isActivityInFuture(activity) && activity.userEnrolled == false"
+                                        mat-mini-fab [color]="isActivityInFuture(activity) ? 'primary' : ''" aria-label="Inschrijven"
+                                        [routerLink]="['/enroll', activity.activityType, activity.id]"
+                                        matTooltip="Schrijf jezelf in" matTooltipPosition="left">
+                                    <mat-icon>assignment</mat-icon>
+                                </button>
+                                <button *ngIf="isActivityInFuture(activity) && activity.userEnrolled"
+                                        mat-mini-fab [color]="isActivityInFuture(activity) ? 'primary' : ''" aria-label="Ingeschreven"
+                                        matTooltip="Je bent al ingeschreven" matTooltipPosition="left">
+                                    <mat-icon>assignment_turned_in</mat-icon>
+                                </button>
+                                <button *ngIf="!isActivityInFuture(activity)"
+                                        mat-mini-fab [color]="isActivityInFuture(activity) ? 'primary' : ''" aria-label="Ingeschreven"
+                                        matTooltip="Je kan niet meer inschrijven" matTooltipPosition="left">
+                                    <mat-icon>assignment_late</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </mat-card-footer>
+                </mat-card>
+
+                <mat-card *ngIf="activityList.activities.length === 0">
+                    <mat-card-content>Er werden geen activiteiten gevonden op basis van uw filtergegevens...</mat-card-content>
+                </mat-card>
+            </div>
+            <app-paginator [pageSize]="pageSize" [length]="activityList.totalRecords" (page)="onPageChanged($event)">
+            </app-paginator>
+            <app-action-menu *ngIf="authorized">
+                <app-action-menu-button text="Nieuwe activiteit" link="/add-activity">
+                    add_circle
+                </app-action-menu-button>
+            </app-action-menu>
+        </ng-container>
+        <ng-template #loading>
+            <div class="loading-container">
+                <mat-spinner></mat-spinner>
+            </div>
+        </ng-template>
+    </div>
+</div>

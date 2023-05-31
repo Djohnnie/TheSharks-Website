@@ -1,0 +1,34 @@
+<div class="columns m-2">
+    <div class="column is-3">
+        <button mat-icon-button routerLink=".." routerLinkActive="active" matTooltip="Terug" matTooltipPosition="right">
+            <mat-icon>arrow_back</mat-icon>
+        </button>
+    </div>
+    <div class="column is-6">
+        <ng-container *ngIf="role as role; else loading">
+            <h1>Rol {{role.name}}</h1>
+            <form [formGroup]="roleForm" class="stack">
+                <h4>Rechten</h4>
+                <ng-container formArrayName="claims">
+                    <ng-container *ngFor="let claim of roleClaims.controls; let i = index">
+                        <div class="checklist">
+                            <mat-checkbox [formControlName]="i">
+                                {{claimValues[i]}}
+                            </mat-checkbox>
+                        </div>
+                    </ng-container>
+                </ng-container>
+                <div class="sticky level p-4">
+                    <button mat-flat-button color="accent" (click)="onSave()" [disabled]="!roleForm.dirty">
+                        Opslaan
+                    </button>
+                </div>
+            </form>
+        </ng-container>
+        <ng-template #loading>
+            <div class="loading-container">
+                <mat-spinner></mat-spinner>
+            </div>
+        </ng-template>
+    </div>
+</div>

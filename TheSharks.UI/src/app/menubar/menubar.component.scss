@@ -1,0 +1,118 @@
+.spacing {
+    flex: 1 1 auto;
+}
+
+.mat-drawer-container {
+    background-color: transparent;
+
+    div {
+        position: relative;
+    }
+}
+
+img {
+    max-height: 100%;
+    padding: 0.75rem;
+    box-sizing: border-box;
+}
+
+.mat-drawer {
+    width: 15rem;
+}
+
+.test {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    .toolbar {
+        flex: 0 1 auto;
+
+        img {
+            cursor: pointer;
+        }
+    }
+
+    .drawer-container {
+        flex: 1 1 auto;
+    }
+}
+
+.social {
+
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding-bottom: 40px !important;
+
+    svg {
+        width: 50%;
+        height: 50%;
+        fill: white;
+    }
+}
+
+.version {
+    position: absolute !important;
+    box-sizing: border-box;
+    background-color: white;
+    width: 100%;
+    bottom: 0px;
+    font-size: .75em;
+    padding-left: 10px !important;
+    padding-top: 1px !important;
+    padding-right: 10px !important;
+    padding-bottom: 1px !important;
+}
+
+.privacy {
+    position: absolute !important;
+    box-sizing: border-box;
+    background-color: white;
+    bottom: 0px;
+    right: 0px;
+    font-size: .75em;
+    padding-left: 10px !important;
+    padding-top: 1px !important;
+    padding-right: 10px !important;
+    padding-bottom: 1px !important;
+}
+
+.mat-drawer-content {
+    overflow-y: scroll;
+}
+
+.avatar {
+    cursor: pointer;
+    width: 2.5em;
+    height: 2.5em;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.example-tree-invisible {
+    display: none;
+  }
+  
+  .example-tree ul,
+  .example-tree li {
+    margin-top: 0;
+    margin-bottom: 0;
+    list-style-type: none;
+  }
+  
+  /*
+   * This padding sets alignment of the nested nodes.
+   */
+  .example-tree .mat-nested-tree-node div[role=group] {
+    padding-left: 20px;
+  }
+  
+  /*
+   * Padding for leaf nodes.
+   * Leaf nodes need to have padding so as to align with other non-leaf nodes
+   * under the same parent.
+   */
+  .example-tree div[role=group] > .mat-tree-node {
+    padding-left: 20px;
+  }

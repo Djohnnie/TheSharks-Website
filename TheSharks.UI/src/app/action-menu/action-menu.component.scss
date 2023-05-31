@@ -1,0 +1,18 @@
+.action-menu {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: flex-end;
+    gap: 1rem;
+    z-index: 2;
+}
+
+.action-buttons {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: flex-end;
+    gap: 1rem;
+}

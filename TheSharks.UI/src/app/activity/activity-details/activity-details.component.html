@@ -1,0 +1,90 @@
+<div class="columns m-2">
+    <div class="column is-2">
+        <button mat-icon-button routerLink="../.." routerLinkActive="active" matTooltip="Terug"
+            matTooltipPosition="right">
+            <mat-icon>
+                arrow_back
+            </mat-icon>
+        </button>
+    </div>
+    <div *ngIf="activity as a" [class]="!(isHandset$ | async) ? 'column is-8' : 'column is-8 column-margin'">
+        <app-activity-details-only [activity]="a" [showInfo]="true"></app-activity-details-only>
+        <br>
+        <ng-container *ngIf="a.enrollments.length">
+            <h2>Deelnemers</h2>
+            <table mat-table [dataSource]="a.enrollments" class="mat-elevation-z3">
+                <ng-container matColumnDef="name">
+                    <mat-header-cell *matHeaderCellDef>Naam</mat-header-cell>
+                    <mat-cell *matCellDef="let participant">
+                        <mat-icon>{{participant.id ? "assignment_ind" : "face"}}</mat-icon>
+                        &nbsp;&nbsp;
+                        {{participant.registree}}
+                    </mat-cell>
+                </ng-container>
+                <ng-container *ngIf="isDiveActivity" matColumnDef="asDiver">
+                    <mat-header-cell *matHeaderCellDef>Als duiker?</mat-header-cell>
+                    <mat-cell *matCellDef="let participant">
+                        <mat-icon *ngIf="participant.asDiver">done</mat-icon>
+                    </mat-cell>
+                </ng-container>
+                <ng-container *ngIf="isDiveActivity" matColumnDef="diveCertificate">
+                    <mat-header-cell *matHeaderCellDef>Brevet</mat-header-cell>
+                    <mat-cell *matCellDef="let participant">
+                        <mat-chip-list *ngIf="participant.asDiver">
+                            <mat-chip>
+                                <mat-icon class="chip-icon">
+                                    workspace_premium
+                                </mat-icon>
+                                {{participant.diveCertificate}}
+                            </mat-chip>
+                        </mat-chip-list>
+                    </mat-cell>
+                </ng-container>
+                <ng-container *ngIf="isDiveActivity">
+                    <mat-header-row *matHeaderRowDef="columns"></mat-header-row>
+                    <mat-row matRipple *matRowDef="let participant; columns: columns;"
+                        (click)="openParticipantDialog(participant)">
+                    </mat-row>
+                </ng-container>
+                <ng-container *ngIf="!isDiveActivity">
+                    <mat-header-row *matHeaderRowDef="noDiveColumns"></mat-header-row>
+                    <mat-row matRipple *matRowDef="let participant; columns: noDiveColumns;"
+                        (click)="openParticipantDialog(participant)">
+                    </mat-row>
+                </ng-container>
+            </table>
+        </ng-container>
+        <app-action-menu *ngIf="authorized || a.necessarySubscription">
+            <app-action-menu-button *ngIf="a.necessarySubscription && !userEnrolled" text="Inschrijven"
+                [disabled]="!isActivityInFuture(a)"
+                [link]="['/enroll', a.activityType, a.id]">
+                assignment
+            </app-action-menu-button>
+            <app-action-menu-button *ngIf="userEnrolled" text="Uitschrijven" 
+                [disabled]="!isActivityInFuture(a)" (cclick)="removeEnrollment()">
+                assignment_late
+            </app-action-menu-button>
+            <app-action-menu-button text="Bewerken" *ngIf="authorized || isResponsible"
+                [disabled]="!isActivityInFuture(a)"
+                [link]="['/edit-activity', a.activityType, a.id]">
+                edit
+            </app-action-menu-button>
+            <app-action-menu-button *ngIf="authorized || isResponsible" text="Verwijderen" 
+                [disabled]="!isActivityInFuture(a)" (cclick)="openDeleteDialog()">
+                delete
+            </app-action-menu-button>
+            <app-action-menu-button *ngIf="authorized || isResponsible" text="Email sturen" 
+                [disabled]="!isActivityInFuture(a) || numberOfEnrolledMembers <= 0" (cclick)="openEmailDialog()"
+                [matBadge]="numberOfEnrolledMembers"
+                [matBadgeHidden]="numberOfEnrolledMembers <= 0">
+                email
+            </app-action-menu-button>
+            <app-action-menu-button *ngIf="authorized || isResponsible && isMobile" text="SMS sturen" 
+                [disabled]="!isActivityInFuture(a) || numberOfMembersWithPhoneNumber <= 0" (cclick)="openSMS()"
+                [matBadge]="numberOfMembersWithPhoneNumber"
+                [matBadgeHidden]="numberOfMembersWithPhoneNumber <= 0">
+                message
+            </app-action-menu-button>
+        </app-action-menu>
+    </div>
+</div>

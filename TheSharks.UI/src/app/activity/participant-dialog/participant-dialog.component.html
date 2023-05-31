@@ -1,0 +1,56 @@
+<h1 mat-dialog-title>
+    <mat-icon>{{participant.id ? "assignment_ind" : "face"}}</mat-icon>
+    <br>
+    {{participant.registree}}
+</h1>
+<div mat-dialog-content>
+    <p *ngIf="participant.registratorFirstName && participant.registratorLastName">
+        <strong>Ingeschreven door</strong><br>
+        {{participant.registratorFirstName + " " + participant.registratorLastName}}
+    </p>
+    <ng-container *ngIf="isDiveActivity">
+        <p>
+            <strong>Als duiker?</strong><br>
+            {{participant.asDiver ? 'Ja' : 'Nee'}}
+        </p>
+        <p *ngIf="participant.asDiver">
+            <strong>Brevet</strong><br>
+            <mat-chip-list>
+                <mat-chip>
+                    <mat-icon class="chip-icon">
+                        workspace_premium
+                    </mat-icon>
+                    {{participant.diveCertificate}}
+                </mat-chip>
+            </mat-chip-list>
+        </p>
+    </ng-container>
+    <p *ngIf="participant.openWaterTestTitle">
+        <strong>Openwaterproef</strong><br>
+        <mat-chip-list>
+            <mat-chip class="ellipsis-chip clickable-chip" (click)="openContentDialog()">
+                <mat-icon class="chip-icon">
+                    assignment
+                </mat-icon>
+                <span class="ellipsis-span">{{participant.openWaterTestTitle}}</span>
+            </mat-chip>
+        </mat-chip-list>
+    </p>
+    <p *ngIf="participant.registreeEmail">
+        <strong>Email</strong><br>
+        {{participant.registreeEmail}}
+    </p>
+    <p *ngIf="participant.registreePhoneNumber">
+        <strong>Telefoon</strong><br>
+        <a href="tel:{{participant.registreePhoneNumber}}">{{participant.registreePhoneNumber}}</a>
+    </p>
+    <p *ngIf="participant.registreePhoneNumber">
+        <strong>SMS</strong><br>
+        <a href="sms:{{participant.registreePhoneNumber}}">{{participant.registreePhoneNumber}}</a>
+    </p>
+</div>
+<div mat-dialog-actions align="end">
+    <button mat-button color="primary" mat-dialog-close>
+        Sluit
+    </button>
+</div>

@@ -1,0 +1,64 @@
+<div class="columns m-2" *ngIf="currentPicture === undefined">
+    <div class="column is-2">
+        <button mat-icon-button routerLink="../" routerLinkActive="active" matTooltip="Terug"
+            matTooltipPosition="right">
+            <mat-icon>
+                arrow_back
+            </mat-icon>
+        </button>
+    </div>
+    <ng-container *ngIf="gallery as g; else loading">
+        <div class="column is-8">
+            <h1>{{g.name}}</h1>
+            <div class="columns is-multiline is-mobile">
+                <div class="column is-one-third-desktop is-half-tablet is-full-mobile image-card"
+                    *ngFor="let picture of g.pictures; let i = index">
+                    <mat-card class="clickable">
+                        <mat-checkbox type="checkbox" (change)="toggleAppendList(picture.name, picture.id)"
+                            *ngIf="selectMode">
+                        </mat-checkbox>
+                        <img [src]="picture.storageUrl" (click)="openPicture(i)">
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+        <app-action-menu *ngIf="authorized">
+            <app-action-menu-button (cclick)="toggleSelectMode()" text="Foto's selecteren" *ngIf="!selectMode">
+                check_box
+            </app-action-menu-button>
+            <app-action-menu-button (cclick)="toggleSelectMode()" text="Annuleren" *ngIf="selectMode">
+                cancel
+            </app-action-menu-button>
+            <app-action-menu-button (cclick)="removePictures()" text="Foto's verwijderen"
+                [disabled]="!toRemovePictures.length" *ngIf="selectMode">
+                delete
+            </app-action-menu-button>
+            <app-action-menu-button (cclick)="openPictureDialog()" text="Foto's toevoegen" *ngIf="!selectMode">
+                add_a_photo
+            </app-action-menu-button>
+            <app-action-menu-button (cclick)="openDialog()" text="Gallerij verwijderen" *ngIf="!selectMode">
+                delete
+            </app-action-menu-button>
+        </app-action-menu>
+    </ng-container>
+    <ng-template #loading>
+        <div class="loading-container">
+            <mat-spinner></mat-spinner>
+        </div>
+    </ng-template>
+</div>
+
+<div class="backdrop" *ngIf="currentPicture as p">
+    <button mat-mini-fab class="close" (click)="closePicture()" matTooltip="Sluiten" matTooltipPosition="left">
+        <mat-icon>close</mat-icon>
+    </button>
+    <div class="left" (click)="openPicture(currentIndex - 1)">
+        <mat-icon>chevron_left</mat-icon>
+    </div>
+    <div class="right" (click)="openPicture(currentIndex + 1)">
+        <mat-icon>chevron_right</mat-icon>
+    </div>
+    <div class="image">
+        <img [src]="p.storageUrl">
+    </div>
+</div>

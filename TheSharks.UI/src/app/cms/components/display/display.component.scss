@@ -1,0 +1,40 @@
+.img {
+    height: 10rem;
+    width: 10rem;
+    align-self: center;
+    border-radius: 50%;
+    background: #CFD8DC;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    img {
+        object-fit: cover;
+        height: 100%;
+        width: 100%;
+        border-radius: 50%;
+    }
+}
+
+.editable {
+    cursor: pointer;
+}
+
+.editable-title {
+    width: 100%;
+}
+
+.text {
+    text-align: center;
+}
+
+.item {
+    position: relative;
+}
+
+.delete {
+    position: absolute;
+    top: 0;
+    right: 0;
+}

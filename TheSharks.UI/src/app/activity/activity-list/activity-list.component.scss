@@ -1,0 +1,83 @@
+.align-end {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.icon-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+
+    div {
+        display: flex;
+        align-items: center;
+        margin: 0.5rem 0;
+
+        .mat-icon {
+            margin-right: 0.5rem;
+        }
+    }
+}
+
+.mat-card-title-container {
+    display: flex;
+}
+
+.fill {
+    flex: 1;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.mat-card-footer {
+    cursor: default;
+}
+
+.clickable:hover {
+    background: whitesmoke;
+}
+
+.mat-card-footer-container {
+    display: flex;
+
+    div {
+        display: flex;
+        align-items: center;
+        margin: 0.5rem 0;
+
+        .mat-icon {
+            vertical-align: middle;
+        }
+    }
+}
+
+.mat-card-footer {
+    background-color: whitesmoke;
+    padding: 5px 20px;
+}
+
+.mat-icon-people {
+    margin-right: 0.5rem;
+}
+
+.column-margin {
+    margin-bottom: 6rem;
+}
+
+a:link {
+    color: #00acc1;
+}
+
+a:visited {
+    color: #00acc1;
+}
+
+a:hover {
+    color: #1565c0;
+}
+
+a:active {
+    color: #00acc1;
+}

@@ -1,0 +1,8 @@
+<div class="action-menu">
+    <button mat-fab (click)="toggleMenu()">
+        <mat-icon [@openClose]="isOpen ? 'open' : 'closed'">add</mat-icon>
+    </button>
+    <div class="action-buttons" [@buttons]="isOpen ? 'open' : 'closed'">
+        <ng-content *ngIf="isOpen"></ng-content>
+    </div>
+</div>

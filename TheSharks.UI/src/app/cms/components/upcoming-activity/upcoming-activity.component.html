@@ -1,0 +1,35 @@
+<ng-container *ngIf="activity as a; else noActivity">
+    <mat-card>
+        <mat-card-content>
+            <h2>Eerstvolgende activiteit</h2>
+            <h3>{{a.name}}</h3>
+            <div class="ml-4 mb-4 icon-list content">
+                <div>
+                    <mat-icon color="accent">
+                        place
+                    </mat-icon>
+                    {{activity.location}}
+                </div>
+                <div>
+                    <mat-icon color="accent">
+                        event
+                    </mat-icon>
+                    {{activity.date.toLocaleDateString("nl-BE")}}
+                </div>
+                <div>
+                    <mat-icon color="accent">
+                        badge
+                    </mat-icon>
+                    {{activity.responsibleFirstName}} {{activity.responsibleLastName}}
+                </div>
+            </div>
+            <button mat-flat-button color="accent" routerLink="/activities" routerLinkActive="active">Bekijk alle
+                activiteiten</button>
+        </mat-card-content>
+        <mat-card-footer *ngIf="loading">
+            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        </mat-card-footer>
+    </mat-card>
+</ng-container>
+<ng-template #noActivity>
+</ng-template>

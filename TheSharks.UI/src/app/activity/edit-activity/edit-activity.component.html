@@ -1,0 +1,85 @@
+<div class="columns m-2">
+    <div class="column is-8 is-offset-2">
+        <h1>Activiteit bewerken</h1>
+        <ng-container *ngIf="activity as a; else loading">
+            <form [formGroup]="editActivityForm" class="stack">
+                <mat-form-field appearance="fill">
+                    <mat-label>Titel</mat-label>
+                    <input matInput type="text" formControlName="title" maxlength="120">
+                    <mat-icon matSuffix>title</mat-icon>
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Datum</mat-label>
+                    <input matInput formControlName="date" [matDatepicker]="picker" [min]="minDate">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Locatie</mat-label>
+                    <input matInput type="text" formControlName="location" maxlength="40">
+                    <mat-icon matSuffix>place</mat-icon>
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Locatielink</mat-label>
+                    <input matInput type="text" formControlName="locationLink" maxlength="512">
+                    <mat-icon matSuffix>my_location</mat-icon>
+                </mat-form-field>
+                <div class="columns is-deskthop is-gapless">
+                    <div class="column is-half stack">
+                        <mat-form-field *ngIf="type === 'dive' || type === 'event'" appearance="fill">
+                            <mat-label>Vertrek</mat-label>
+                            <input matInput type="time" formControlName="departure">
+                        </mat-form-field>
+                        <mat-form-field *ngIf="type === 'dive'" appearance="fill">
+                            <mat-label>Briefing</mat-label>
+                            <input matInput type="time" formControlName="briefingTime">
+                        </mat-form-field>
+                        <mat-form-field *ngIf="type === 'dive'" appearance="fill">
+                            <mat-label>Getij</mat-label>
+                            <input matInput type="text" formControlName="tide" maxlength="20">
+                            <mat-icon matSuffix>waves</mat-icon>
+                        </mat-form-field>
+                    </div>
+                    <div class="column is-half stack">
+                        <mat-form-field *ngIf="type === 'dive'" appearance="fill">
+                            <mat-label>Te water</mat-label>
+                            <input matInput type="time" formControlName="atWater">
+                        </mat-form-field>
+                        <mat-form-field *ngIf="type !== 'dive'" appearance="fill">
+                            <mat-label>Starttijd</mat-label>
+                            <input matInput type="time" formControlName="startTime">
+                        </mat-form-field>
+                        <mat-form-field *ngIf="type !== 'dive'" appearance="fill">
+                            <mat-label>Eindtijd</mat-label>
+                            <input matInput type="time" formControlName="endTime">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <h2>Info</h2>
+                <mat-form-field appearance="fill">
+                    <mat-label>Info</mat-label>
+                    <textarea matInput formControlName="info"></textarea>
+                </mat-form-field>
+                <h2>Leden Info</h2>
+                <mat-form-field appearance="fill">
+                    <mat-label>Leden Info</mat-label>
+                    <textarea matInput formControlName="memberInfo"></textarea>
+                </mat-form-field>
+            </form>
+            <app-action-menu>
+                <app-action-menu-button text="Opslaan"
+                    [disabled]="(!editActivityForm.valid && !loadingCall) || loadingCall" (cclick)="onSave()">
+                    save
+                </app-action-menu-button>
+                <app-action-menu-button text="Annuleren" [link]="['/activities', type, id]" routerLinkActive="active">
+                    cancel
+                </app-action-menu-button>
+            </app-action-menu>
+        </ng-container>
+        <ng-template #loading>
+            <div class="loading-container">
+                <mat-spinner></mat-spinner>
+            </div>
+        </ng-template>
+    </div>
+</div>

@@ -1,0 +1,35 @@
+<div class="columns m-2">
+    <div  [class]="!(isHandset$ | async) ? 'column is-8 is-offset-2' : 'column is-8 is-offset-2 column-margin'">
+        <h1>GALLERIJEN</h1>
+        <ng-container *ngIf="galleryList as GalleryList ; else loading">
+            <div class="columns is-multiline">
+                <div class="column is-half box" *ngFor="let gallery of galleryList.galleries">
+                    <mat-card class="clickable" [routerLink]="['/galleries', gallery.id]">
+                        <mat-card-title>
+                            {{gallery.name}}
+                        </mat-card-title>
+                        <mat-card-content>
+                            <div>
+                                <p>{{gallery.amountPictures}} foto's</p>
+                            </div>
+                            <img mat-card-avatar [src]="getThumbnail(gallery)">
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+            </div>
+            <mat-card *ngIf="galleryList.galleries.length === 0">
+                Geen gallerijen gevonden...
+            </mat-card>
+            <app-paginator [pageSize]="pageSize" [length]="galleryList.totalRecords" (page)="onPageChanged($event)">
+            </app-paginator>
+            <app-action-menu *ngIf="authorized">
+                <app-action-menu-button link="/add-gallery" text="Nieuwe gallerij">add_circle</app-action-menu-button>
+            </app-action-menu>
+        </ng-container>
+        <ng-template #loading>
+            <div class="loading-container">
+                <mat-spinner></mat-spinner>
+            </div>
+        </ng-template>
+    </div>
+</div>

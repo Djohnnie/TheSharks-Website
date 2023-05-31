@@ -1,0 +1,12 @@
+<div class="overlay" *ngIf="!entered" [@landingScreen]>
+    <ng-particles *ngIf="particles.value" [id]="id" [options]="particlesOptionsSmall" [particlesInit]="particlesInit"
+        class="t">
+    </ng-particles>
+    <img src="/assets/logo-full.svg">
+    <div class="actions">
+        <button mat-flat-button color="accent" (click)="enter()">Welkom</button>
+        <mat-slide-toggle [formControl]="particles" class="slider" (change)="toggleBubbles()">Bubbels</mat-slide-toggle>
+        <mat-checkbox [formControl]="showAgain" class="checkbox">Dit niet meer weergeven</mat-checkbox>
+    </div>
+</div>
+<div [@overlay]="entered ? 'open' : 'closed'" class="transition"></div>

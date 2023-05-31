@@ -1,0 +1,80 @@
+<div class="columns m-2">
+    <div  [class]="!(isHandset$ | async) ? 'column is-8 is-offset-2' : 'column is-8 is-offset-2 column-margin'">
+        <h1>DOCUMENTEN</h1>
+        <ng-container *ngIf="importantDocumentList as important; else loading">
+            <ng-container *ngIf="important.length; else empty">
+                <mat-table [dataSource]="important" class="mat-elevation-z3">
+                    <ng-container matColumnDef="name">
+                        <mat-header-cell *matHeaderCellDef>Belangrijke documenten</mat-header-cell>
+                        <mat-cell *matCellDef="let doc">
+                            <span>{{doc.name}}</span>
+                        </mat-cell>
+                    </ng-container>                    
+
+                    <mat-header-row *matHeaderRowDef="columns"></mat-header-row>
+                    <mat-row matRipple *matRowDef="let doc; columns: columns;" (click)="selectDoc(doc)"
+                        [matMenuTriggerFor]="menu">
+                    </mat-row>
+                </mat-table>
+
+                <mat-menu #menu="matMenu">
+                    <button mat-menu-item (click)="download()">
+                        <mat-icon>download</mat-icon>
+                        <span>Download</span>
+                    </button>
+                    <button *ngIf="authorized" mat-menu-item (click)="deleteDocument()">
+                        <mat-icon>delete</mat-icon>
+                        <span>Verwijderen</span>
+                    </button>
+                </mat-menu>
+            </ng-container>
+            <ng-template #empty>
+                <mat-card>Geen belangrijke documenten beschikbaar...</mat-card>
+            </ng-template>
+        </ng-container>
+
+        <ng-container *ngIf="otherDocumentList as otherDocuments; else loading">
+            <ng-container *ngIf="otherDocuments.length; else empty">
+                <mat-table [dataSource]="otherDocuments" class="mat-elevation-z3">
+                    <ng-container matColumnDef="name">
+                        <mat-header-cell *matHeaderCellDef>Andere documenten</mat-header-cell>
+                        <mat-cell *matCellDef="let doc">
+                            <span>{{doc.name}}</span>
+                        </mat-cell>
+                    </ng-container>                    
+
+                    <mat-header-row *matHeaderRowDef="columns"></mat-header-row>
+                    <mat-row matRipple *matRowDef="let doc; columns: columns;" (click)="selectDoc(doc)"
+                        [matMenuTriggerFor]="menu">
+                    </mat-row>
+                </mat-table>
+
+                <mat-menu #menu="matMenu">
+                    <button mat-menu-item (click)="download()">
+                        <mat-icon>download</mat-icon>
+                        <span>Download</span>
+                    </button>
+                    <button *ngIf="authorized" mat-menu-item (click)="deleteDocument()">
+                        <mat-icon>delete</mat-icon>
+                        <span>Verwijderen</span>
+                    </button>
+                </mat-menu>
+            </ng-container>
+            <ng-template #empty>
+                <mat-card>Geen andere documenten beschikbaar...</mat-card>
+            </ng-template>
+        </ng-container>
+        
+        <app-action-menu *ngIf="authorized">
+            <app-action-menu-button text="Nieuw document" (cclick)="openDialog()">add_circle
+            </app-action-menu-button>
+        </app-action-menu>
+        
+        <ng-template #loading>
+            <div class="loading-container">
+                <mat-spinner></mat-spinner>
+            </div>
+        </ng-template>
+
+    </div>
+</div>

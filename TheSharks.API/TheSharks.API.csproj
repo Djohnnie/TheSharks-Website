@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="MediatR" Version="11.1.0" />
+		<PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+		<PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.21.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.2" />
+		<PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="7.0.2" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+		<PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\TheSharks.Application\TheSharks.Application.csproj" />
+		<ProjectReference Include="..\TheSharks.DataAccess\TheSharks.DataAccess.csproj" />
+		<ProjectReference Include="..\TheSharks.Identity\TheSharks.Identity.csproj" />
+		<ProjectReference Include="..\TheSharks.Domain\TheSharks.Domain.csproj" />
+		<ProjectReference Include="..\TheSharks.Mail\TheSharks.Mail.csproj" />
+		<ProjectReference Include="..\TheSharks.Storage\TheSharks.Storage.csproj" />
+	</ItemGroup>
+
+</Project>

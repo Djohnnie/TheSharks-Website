@@ -1,0 +1,126 @@
+<div class="test">
+    <mat-toolbar color="primary" class="toolbar">
+        <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
+            *ngIf="isHandset$ | async">
+            <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+        </button>
+        <img src="/assets/logo-title.svg" routerLink="/">
+        <span class="spacing"></span>
+        <button *ngIf="!(loggedIn$ | async)" mat-flat-button color="accent" routerLink="/login"
+            routerLinkActive="active">Aanmelden</button>
+        <ng-container *ngIf="(loggedIn$ | async)">
+            <span class="mr-2" *ngIf="!(isHandset$ | async)">
+                {{greeting}}
+            </span>
+            <img class="avatar" [matMenuTriggerFor]="profileMenu"
+                [src]="(currentUser$ | async)?.profilePicture ? 'data:image/png;base64,' + (currentUser$ | async)?.profilePicture : '/assets/person-placeholder.jpg'">
+        </ng-container>
+        <mat-menu #profileMenu>
+            <button mat-menu-item routerLink="/profile" routerLinkActive="active">
+                <mat-icon>person</mat-icon>
+                <span>Profiel</span>
+            </button>
+            <button mat-menu-item routerLink="/help" routerLinkActive="active">
+                <mat-icon>help</mat-icon>
+                <span>Hulp krijgen</span>
+            </button>
+            <button mat-menu-item routerLink="/app" routerLinkActive="active">
+                <mat-icon>get_app</mat-icon>
+                <span>Download App</span>
+            </button>
+            <button mat-menu-item (click)="onDialogOpen()">
+                <mat-icon>logout</mat-icon>
+                <span>Afmelden</span>
+            </button>
+        </mat-menu>
+    </mat-toolbar>
+    <mat-drawer-container class="drawer-container">
+        <mat-drawer #drawer [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+            (click)="closeDrawer(drawer)" [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
+            <mat-nav-list>                
+                <mat-tree [treeControl]="treeControl" [dataSource]="dataSource" class="example-tree">
+                    <ng-container *matTreeNodeDef="let node">
+                        <mat-tree-node [class.example-tree-invisible]="!(loggedIn$ | async) && node.membersOnly" matTreeNodePadding>
+                            <a mat-list-item [routerLink]="['/page', node.link]"
+                                routerLinkActive="active">{{node.title}}</a>
+                        </mat-tree-node>
+                    </ng-container>
+                    <ng-container *matTreeNodeDef="let node; when: hasChild">
+                        <mat-nested-tree-node [class.example-tree-invisible]="!(loggedIn$ | async) && node.membersOnly" matTreeNodePadding>
+                            <div class="mat-tree-node">
+                                <button mat-icon-button matTreeNodeToggle>
+                                    <mat-icon class="mat-icon-rtl-mirror">
+                                        {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                                    </mat-icon>
+                                </button>
+                                <a mat-list-item [routerLink]="['/page', node.link]"
+                                    routerLinkActive="active">{{node.title}}</a>
+                            </div>
+                            <div [class.example-tree-invisible]="!treeControl.isExpanded(node)"
+                                role="group">
+                                <ng-container matTreeNodeOutlet></ng-container>
+                            </div>
+                        </mat-nested-tree-node>
+                    </ng-container>
+                </mat-tree>
+
+                <a mat-list-item routerLink="/news-items" 
+                    routerLinkActive="active">Nieuws</a>
+                <a *ngIf="(loggedIn$ | async)" mat-list-item routerLink="/activities"
+                    routerLinkActive="active">Activiteiten</a>
+                <a *ngIf="!(loggedIn$ | async)" mat-list-item routerLink="/activities-light"
+                    routerLinkActive="active">Activiteiten</a>
+                <a *ngIf="(loggedIn$ | async)" mat-list-item routerLink="/galleries"
+                    routerLinkActive="active">Gallerijen</a>
+                <a *ngIf="(loggedIn$ | async)" mat-list-item routerLink="/documents"
+                    routerLinkActive="active">Documenten</a>
+                <a *ngIf="(loggedIn$ | async)" mat-list-item routerLink="/members/memberlist"
+                    routerLinkActive="active">Leden</a>
+                <mat-divider *ngIf="(loggedIn$ | async) && (authRoles$ | async ) || (authCms$ | async )"></mat-divider>
+                <a *ngIf="(loggedIn$ | async) && (authCms$ | async )" mat-list-item routerLink="/contentmanager/pages"
+                    routerLinkActive="active">
+                    Contentmanager
+                </a>
+                <a *ngIf="(loggedIn$ | async) && (authRoles$ | async )" mat-list-item routerLink="/roles"
+                    routerLinkActive="active">
+                    Rollenbeheer
+                </a>
+                <a *ngIf="(loggedIn$ | async) && (authActivities$ | async )" mat-list-item routerLink="/open-water-tests"
+                    routerLinkActive="active">
+                    Openwaterproeven
+                </a>
+                <a *ngIf="(loggedIn$ | async) && (authStatistics$ | async )" mat-list-item routerLink="/statistics"
+                    routerLinkActive="active">
+                    Statistieken
+                </a>
+                <mat-divider *ngIf="!(loggedIn$ | async)"></mat-divider>
+                <a *ngIf="!(loggedIn$ | async)" mat-list-item routerLink="/login"
+                    routerLinkActive="active">Aanmelden</a>
+                <mat-divider></mat-divider>
+                <div class="p-4 social">
+                    <button mat-mini-fab (click)="openLink('https://www.instagram.com/thesharksduikschool/')">
+                        <svg viewBox="0 0 448 512">
+                            <path
+                                d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z" />
+                        </svg>
+                    </button>
+                    <button mat-mini-fab (click)="openLink('https://www.facebook.com/thesharksduikschool')">
+                        <svg viewBox="0 0 512 512">
+                            <path
+                                d="M504 256C504 119 393 8 256 8S8 119 8 256c0 123.78 90.69 226.38 209.25 245V327.69h-63V256h63v-54.64c0-62.15 37-96.48 93.67-96.48 27.14 0 55.52 4.84 55.52 4.84v61h-31.28c-30.8 0-40.41 19.12-40.41 38.73V256h68.78l-11 71.69h-57.78V501C413.31 482.38 504 379.78 504 256z" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="p-4 version">
+                    v{{version}}
+                </div>
+                <div class="p-4 privacy">
+                    <a routerLink="/privacy" routerLinkActive="active">Privacy</a>
+                </div>
+            </mat-nav-list>
+        </mat-drawer>
+        <mat-drawer-content>
+            <ng-content></ng-content>
+        </mat-drawer-content>
+    </mat-drawer-container>
+</div>

@@ -1,0 +1,8 @@
+<h1 mat-dialog-title>{{data.name}} verwijderen</h1>
+<mat-dialog-content>
+    Ben je zeker dat je deze rol wilt verwijderen? Deze actie is permanent.
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-dialog-close mat-button>Annuleren</button>
+    <button mat-flat-button color="warn" cdkFocusInitial (click)="onDelete()">Verwijderen</button>
+</mat-dialog-actions>

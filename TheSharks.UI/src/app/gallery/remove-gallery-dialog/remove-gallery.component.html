@@ -1,0 +1,11 @@
+<h2 mat-dialog-title>Gallerij {{name}} verwijderen</h2>
+
+<mat-dialog-content class="mat-typography">
+    <h3>Let op: </h3>
+    <p>Bij het verwijderen van een gallerij worden de gekoppelde foto's mee verwijderd.</p>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button (click)="close()">Cancel</button>
+    <button mat-raised-button color="warn" (click)="save()">Verwijderen</button>
+</mat-dialog-actions>

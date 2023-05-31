@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net7.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Remove="appsettings.json" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Include="appsettings.json">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </Content>
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\TheSharks.Application\TheSharks.Application.csproj" />
+		<ProjectReference Include="..\TheSharks.Contracts\TheSharks.Contracts.csproj" />
+		<ProjectReference Include="..\TheSharks.DataAccess\TheSharks.DataAccess.csproj" />
+		<ProjectReference Include="..\TheSharks.Domain\TheSharks.Domain.csproj" />
+		<ProjectReference Include="..\TheSharks.Identity\TheSharks.Identity.csproj" />
+	</ItemGroup>
+
+</Project>

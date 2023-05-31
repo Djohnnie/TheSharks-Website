@@ -1,0 +1,49 @@
+<div class="columns m-2">
+    <div  [class]="!(isHandset$ | async) ? 'column is-8 is-offset-2' : 'column is-8 is-offset-2 column-margin'">
+        <h1>MENUSTRUCTUUR</h1>
+        <ng-container *ngIf="menuTree as tree; else loading">
+            <div cdkDropListGroup>
+                <div *ngFor="let branch of tree; let i = index">
+                    <ng-container *ngIf="branch.length > 0; else newBranch">
+                        <mat-divider class="mt-4 mb-4"></mat-divider>
+                        <div class="dd-list" cdkDropList [cdkDropListData]="branch" (cdkDropListDropped)="drop($event)">
+                            <div *ngFor="let leaf of branch; let i = index" class="dd-box" [cdkDragData]="leaf" cdkDrag
+                                cdkDragLockAxis="y">
+                                <ng-container *ngIf="i === 0 && branch.length > 1; else child">
+                                    <mat-icon>expand_more</mat-icon>
+                                    {{leaf.title}}
+                                </ng-container>
+                                <ng-template #child>
+                                    {{leaf.title}}
+                                </ng-template>
+                                {{leaf.link === null ? "(Geen link)" : ""}}
+                                <mat-icon cdkDragHandle class="dd-handle">drag_handle</mat-icon>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <ng-template #newBranch>
+                        <div cdkDropList [cdkDropListData]="branch" (cdkDropListDropped)="drop($event)"
+                            [cdkDropListEnterPredicate]="noNewListPredicate">
+                            <mat-divider class="mt-4 mb-4"></mat-divider>
+                            <div class="level">
+                                <mat-icon matTooltip="Sleep hierheen om een nieuwe hoofd-link aan te maken"
+                                    matTooltipPosition="above">playlist_add
+                                </mat-icon>
+                            </div>
+                        </div>
+                    </ng-template>
+                </div>
+                <h3></h3>
+            </div>
+            <app-action-menu>
+                <app-action-menu-button [disabled]="tree.length <= 0" (cclick)="onSave()" text="Opslaan">save
+                </app-action-menu-button>
+            </app-action-menu>
+        </ng-container>
+        <ng-template #loading>
+            <div class="loading-container">
+                <mat-spinner></mat-spinner>
+            </div>
+        </ng-template>
+    </div>
+</div>

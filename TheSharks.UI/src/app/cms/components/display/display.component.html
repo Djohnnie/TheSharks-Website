@@ -1,0 +1,58 @@
+<ng-container *ngIf="editMode; else show">
+    <form [formGroup]="displayForm">
+        <mat-form-field class="editable-title" appearance="fill">
+            <mat-label>Titel</mat-label>
+            <input matInput type="text" formControlName="title" maxlength="30">
+        </mat-form-field>
+        <div formArrayName="items" class="columns is-multiline">
+            <ng-container *ngFor="let item of items.controls; let i = index">
+                <div class="column stack item" [formGroupName]="i">
+                    <button class="delete" mat-icon-button (click)="deleteDisplayItem(i)">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                    <div class="img editable" (click)="fileInput.click()">
+                        <ng-container *ngIf="getImageValue(item) === null; else image">
+                            <mat-icon>add_photo_alternate</mat-icon>
+                        </ng-container>
+                        <ng-template #image>
+                            <img [src]="getImageValue(item)">
+                        </ng-template>
+                    </div>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Tekst</mat-label>
+                        <textarea matInput formControlName="text"></textarea>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Email</mat-label>
+                        <textarea matInput formControlName="email"></textarea>
+                    </mat-form-field>
+                    <input type="file" #fileInput style="display: none;" (change)="onImageSelect(fileInput, item)"
+                        accept=".jpg, .jpeg, .png">
+                </div>
+            </ng-container>
+        </div>
+        <div class="level" *ngIf="items.length < 10">
+            <button mat-icon-button color="accent" (click)="addDisplayItem()" matTooltip="Item toevoegen"
+                matTooltipPosition="right">
+                <mat-icon>add_circle</mat-icon>
+            </button>
+        </div>
+    </form>
+</ng-container>
+<ng-template #show>
+    <div *ngIf="content as c; else error">
+        <h2>{{c.title}}</h2>
+        <div class="columns is-multiline">
+            <div class="column stack" *ngFor="let item of c.items">
+                <div class="img" *ngIf="item.image">
+                    <img [src]="item.image">
+                </div>
+                <span class="text mt-2">{{item.text}}</span>
+                <span class="text mt-2"><a href="mailto:{{item.email}}">{{item.email}}</a></span>
+            </div>
+        </div>
+    </div>
+</ng-template>
+<ng-template #error>
+    Er ging iets mis...
+</ng-template>

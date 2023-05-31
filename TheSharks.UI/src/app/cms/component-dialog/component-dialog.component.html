@@ -1,0 +1,8 @@
+<h1>Selecteer component</h1>
+<mat-dialog-content>
+    <mat-selection-list [multiple]="false" (selectionChange)="onSelect($event)">
+        <mat-list-option *ngFor="let component of components" [value]="component">
+            {{component}}
+        </mat-list-option>
+    </mat-selection-list>
+</mat-dialog-content>

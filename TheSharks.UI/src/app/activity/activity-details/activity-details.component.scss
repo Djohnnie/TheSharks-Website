@@ -1,0 +1,39 @@
+table {
+    width: 100%;
+}
+
+mat-row {
+    cursor: pointer;
+}
+
+mat-row:hover {
+    background: whitesmoke
+}
+
+.mat-column-registrator {
+    flex: 0 0 30%;
+}
+
+.mat-column-name {
+    flex: 0 0 50%;
+}
+
+.mat-column-diveCertificate {
+    flex: 0 0 20%;
+}
+
+.column-margin {
+    margin-bottom: 6rem;
+}
+
+.icon-cell {
+    flex: 0 1 auto;
+    padding-right: 24px;
+}
+
+.chip-icon {
+    height: 20px;
+    width: 20px;
+    font-size: 20px;
+    margin-right: 5px;
+}

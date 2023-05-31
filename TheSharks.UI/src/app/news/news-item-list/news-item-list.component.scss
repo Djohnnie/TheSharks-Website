@@ -1,0 +1,26 @@
+.mat-card-subtitle {
+    cursor: pointer;
+}
+
+.mat-card-subtitle:hover {
+    text-decoration: underline;
+}
+
+.mat-card-footer {
+    text-align: center;
+    color: var(--grey-text);
+}
+
+.mat-card {
+    position: relative;
+}
+
+.card-options {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.column-margin {
+    margin-bottom: 6rem;
+}

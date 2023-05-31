@@ -1,0 +1,59 @@
+<ng-container *ngIf="activity as a">
+    <h1>{{a.name}}</h1>
+    <div class="columns is-deskthop is-gapless icon-table">
+        <div class="column is-half">
+            <div>
+                <mat-icon>event</mat-icon>
+                <b>Datum: </b> {{a.date.toLocaleDateString("nl-BE")}}
+            </div>
+            <div *ngIf="a.location">
+                <mat-icon>place</mat-icon>
+                <b>Locatie: </b>
+                <span *ngIf="a.locationLink">
+                    <a [href]="a.locationLink" target="_blank" (click)="$event.stopPropagation()">
+                        {{a.location}}
+                    </a>
+                </span>
+                <span *ngIf="!a.locationLink">
+                    {{a.location}}
+                </span>
+            </div>
+            <div *ngIf="a.responsibleFirstName">
+                <mat-icon>badge</mat-icon>
+                <b>Verantwoordelijke: </b> {{a.responsibleFirstName}} {{a.responsibleLastName}}
+            </div>
+        </div>
+        <div class="column is-half">
+            <div *ngIf="a.startTime || (a.startTime && a.endTime)">
+                <mat-icon>schedule</mat-icon>
+                <b>Tijd: </b> 
+                {{a.startTime.toLocaleTimeString("nl-BE", {hour: '2-digit', minute: '2-digit'})}}
+                {{a.endTime ? " - " + a.endTime.toLocaleTimeString("nl-BE", {hour: '2-digit', minute: '2-digit'}) : ""}}
+            </div>
+            <div *ngIf="a.departure">
+                <mat-icon>directions_car</mat-icon>
+                <b>Vertrek: </b> {{a.departure.toLocaleTimeString("nl-BE", {hour: '2-digit', minute: '2-digit'})}}
+            </div>
+            <div *ngIf="a.briefingTime">
+                <mat-icon>question_answer</mat-icon>
+                <b>Briefing: </b> {{a.briefingTime.toLocaleTimeString("nl-BE", {hour: '2-digit', minute: '2-digit'})}}
+            </div>
+            <div *ngIf="a.atWater">
+                <mat-icon>pool</mat-icon>
+                <b>Te water: </b> {{a.atWater.toLocaleTimeString("nl-BE", {hour: '2-digit', minute: '2-digit'})}}
+            </div>
+            <div *ngIf="a.tide">
+                <mat-icon>waves</mat-icon>
+                <b>Getij: </b> {{a.tide}}
+            </div>
+        </div>
+    </div>
+    <ng-container *ngIf="showInfo && a.info">
+        <h2>Info</h2>
+        <p>{{a.info}}</p>
+    </ng-container>
+    <ng-container *ngIf="showInfo && a.memberInfo">
+        <h2>Leden Info</h2>
+        <p>{{a.memberInfo}}</p>
+    </ng-container>
+</ng-container>

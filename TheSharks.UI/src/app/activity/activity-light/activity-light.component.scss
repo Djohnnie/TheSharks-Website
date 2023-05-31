@@ -1,0 +1,44 @@
+.align-end {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.icon-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+
+    div {
+        display: flex;
+        align-items: center;
+        margin: 0.5rem 0;
+
+        .mat-icon {
+            margin-right: 0.5rem;
+        }
+    }
+}
+
+.mat-card-title-container {
+    display: flex;
+}
+
+.fill {
+    flex: 1;
+}
+
+a:link {
+    color: #00acc1;
+}
+
+a:visited {
+    color: #00acc1;
+}
+
+a:hover {
+    color: #1565c0;
+}
+
+a:active {
+    color: #00acc1;
+}

@@ -1,0 +1,47 @@
+<div class="columns m-2">
+    <div class="column is-3">
+        <button mat-icon-button routerLink="../memberlist" routerLinkActive="active" matTooltip="Terug"
+            matTooltipPosition="right">
+            <mat-icon>
+                arrow_back
+            </mat-icon>
+        </button>
+    </div>
+    <div class="column is-6">
+        <h1>Rollen aanpassen</h1>
+        <ng-container *ngIf="memberRoles as memberRoles; else loading">
+            <form [formGroup]="roleForm" class="stack">
+                <h3>Brevet</h3>
+                <mat-form-field appearance="fill">
+                    <mat-label>Brevet</mat-label>
+                    <mat-select matNativeControl formControlName="divingRole">
+                        <ng-container *ngFor="let role of memberRoles.diveCertificateRoles">
+                            <mat-option [value]="role.name">{{role.name}}</mat-option>
+                        </ng-container>
+                    </mat-select>
+                </mat-form-field>
+                <h3>Rollen</h3>
+                <ng-container formArrayName="nonDivingRoles">
+                    <mat-chip-list selectable multiple>
+                        <mat-chip #c="matChip" [value]="i" *ngFor="let role of nonDivingRoles.controls; let i = index"
+                            (click)="toggleSelection(c, role)" [selected]="role.value">
+                            <mat-icon *ngIf="c.selected">check</mat-icon>
+                            {{memberRoles.nonDiveCertificateRoles[i].name}}
+                        </mat-chip>
+                    </mat-chip-list>
+                </ng-container>
+                <div class="sticky level p-4">
+                    <button mat-flat-button color="accent" (click)="onSubmit()"
+                        [disabled]="(!roleForm.dirty && roleForm.valid) || !roleForm.valid">
+                        Opslaan
+                    </button>
+                </div>
+            </form>
+        </ng-container>
+        <ng-template #loading>
+            <div class="loading-container">
+                <mat-spinner></mat-spinner>
+            </div>
+        </ng-template>
+    </div>
+</div>

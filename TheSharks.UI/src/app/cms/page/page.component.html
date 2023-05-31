@@ -1,0 +1,43 @@
+<ng-container *ngIf="page as page, else loading">
+    <div class="columns m-2">
+        <div class="column box pr-5" [ngClass]="componentLeft || componentRight ? 'is-quarter' : 'is-2'">
+            <ng-container [ngSwitch]="component.name" *ngIf="componentLeft as component">
+                <app-upcoming-activity [editMode]="false" *ngSwitchCase="componentTypes.UpcomingActivity">
+                </app-upcoming-activity>
+                <app-last-news-item *ngSwitchCase="componentTypes.NewsItem"></app-last-news-item>
+                <app-display [contentString]="component.content" *ngSwitchCase="componentTypes.Display"
+                    [editMode]="false"></app-display>
+                <div *ngSwitchCase="componentTypes.Html" [innerHtml]="component.content | skipSanitize"></div>
+            </ng-container>
+        </div>
+        <div class="column box" [ngClass]="componentLeft || componentRight ? 'is-half' : 'is-8'">
+            <mat-card>
+                <ng-container *ngFor="let component of page.components">
+                    <div [ngSwitch]="component.name" class="mb-4" *ngIf="component.position >= 0">
+                        <app-upcoming-activity [editMode]="false" *ngSwitchCase="componentTypes.UpcomingActivity">
+                        </app-upcoming-activity>
+                        <app-last-news-item *ngSwitchCase="componentTypes.NewsItem"></app-last-news-item>
+                        <app-display [contentString]="component.content" *ngSwitchCase="componentTypes.Display"
+                            [editMode]="false"></app-display>
+                        <div *ngSwitchCase="componentTypes.Html" [innerHtml]="component.content | skipSanitize"></div>
+                    </div>
+                </ng-container>
+            </mat-card>
+        </div>
+        <div class="column box pl-5" [ngClass]="componentLeft || componentRight ? 'is-quarter' : 'is-2'">
+            <ng-container [ngSwitch]="component.name" *ngIf="componentRight as component">
+                <app-upcoming-activity [editMode]="false" *ngSwitchCase="componentTypes.UpcomingActivity">
+                </app-upcoming-activity>
+                <app-last-news-item *ngSwitchCase="componentTypes.NewsItem"></app-last-news-item>
+                <app-display [contentString]="component.content" *ngSwitchCase="componentTypes.Display"
+                    [editMode]="false"></app-display>
+                <div *ngSwitchCase="componentTypes.Html" [innerHtml]="component.content | skipSanitize"></div>
+            </ng-container>
+        </div>
+    </div>
+</ng-container>
+<ng-template #loading>
+    <div class="loading-container">
+        <mat-spinner></mat-spinner>
+    </div>
+</ng-template>

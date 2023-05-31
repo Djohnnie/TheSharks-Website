@@ -1,0 +1,9 @@
+<h1 mat-dialog-title>{{openWaterTest.title}}</h1>
+<mat-dialog-content>
+    <div [innerHtml]="openWaterTest.content | skipSanitize"></div>
+</mat-dialog-content>
+<div mat-dialog-actions align="end">
+    <button mat-button color="primary" mat-dialog-close>
+        Sluit
+    </button>
+</div>

@@ -1,0 +1,61 @@
+@import '~@angular/material/theming';
+
+
+@include mat-core();
+/* ======== Angular material custom themes ======== */
+
+
+
+// $my-custom-primary: mat-palette($mat-blue, 600);
+// $my-custom-accent: mat-palette($mat-light-green);
+
+$my-custom-primary: mat-palette($mat-cyan, 600);
+$my-custom-accent: mat-palette($mat-blue, 800);
+$my-custom-theme: mat-light-theme($my-custom-primary, $my-custom-accent);
+
+@include angular-material-theme($my-custom-theme);
+
+// $my-custom-typography-config: mat-typography-config($headline: mat-typography-level(24pt, 32px, 400), );
+// $my-custom-typography-config: mat-typography-config($title: mat-typography-level(20pt), );
+// $my-custom-typography-config: mat-typography-config($subheading-2: mat-typography-level(24pt, 32px, 400), );
+// $my-custom-typography-config: mat-typography-config($subheading-1: mat-typography-level(24pt, 32px, 400), );
+// $my-custom-typography-config: mat-typography-config($body-1: mat-typography-level(13pt, 32px, 400), );
+// $my-custom-typography-config: mat-typography-config($body-2: mat-typography-level(24pt, 32px, 400), );
+// $my-custom-typography-config: mat-typography-config($caption: mat-typography-level(24pt, 32px, 400), );
+$my-custom-typography-config: mat-typography-config($button: mat-typography-level(12pt, 32px, 400),
+        $body-1: mat-typography-level(12pt, 24px, 400),
+        $title: mat-typography-level(16pt, 32px, 400),
+        $headline: mat-typography-level(20pt, 32px, 400), );
+
+
+@include angular-material-typography($my-custom-typography-config);
+
+.mat-tooltip {
+    font-size: inherit;
+}
+
+.mat-header-cell {
+    font-size: inherit;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-outline {
+    background-color: white;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: darkgray;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: gray;
+}

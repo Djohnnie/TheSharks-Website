@@ -1,0 +1,34 @@
+table {
+    width: 100%;
+}
+
+mat-row {
+    cursor: pointer;
+}
+
+mat-row:hover {
+    background: whitesmoke
+}
+
+.right {
+    flex: 0 1 auto;
+    justify-content: center;
+    width: 3rem;
+}
+
+.column-margin {
+    margin-bottom: 6rem;
+}
+
+.chip-icon {
+    height: 20px;
+    width: 20px;
+    font-size: 20px;
+    margin-right: 5px;
+}
+
+.mat-chip-list {
+    flex: 1 0 auto;
+    display: flex;
+    justify-content: flex-end;
+}

@@ -1,0 +1,85 @@
+<div class="columns m-2">
+    <div [class]="!(isHandset$ | async) ? 'column is-8 is-offset-2' : 'column is-8 is-offset-2 column-margin'">
+        <h1>LEDEN</h1>
+        <ng-container *ngIf="dataSource as members; else loading">
+            <mat-form-field appearance="fill">
+                <mat-label>Zoeken...</mat-label>
+                <input matInput type="text" (keyup)="applyFilter($event)" maxlength="30">
+            </mat-form-field>
+            <mat-table [dataSource]="members" class="mat-elevation-z3">
+                <ng-container matColumnDef="select">
+                    <mat-header-cell class="checkbox-cell" *matHeaderCellDef>
+                        <mat-checkbox (change)="$event ? masterToggle() : null"
+                            [checked]="selection.hasValue() && isAllSelected()"
+                            [indeterminate]="selection.hasValue() && !isAllSelected()">
+                        </mat-checkbox>
+                    </mat-header-cell>
+                    <mat-cell class="checkbox-cell" *matCellDef="let row">
+                        <mat-checkbox (click)="$event.stopPropagation()"
+                            (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
+                        </mat-checkbox>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="name">
+                    <mat-header-cell *matHeaderCellDef>Naam</mat-header-cell>
+                    <mat-cell class="image-cell" *matCellDef="let member">
+                        <img class="avatar-icon" [src]="member.picture">
+                        <span>
+                            {{member.firstName}} {{member.lastName}}
+                        </span>
+                        <mat-chip-list>
+                            <ng-container *ngIf="!(isHandset$ | async)">
+                                <mat-chip class="clickable-chip" *ngFor="let role of member.roles" (click)="roleClicked($event, role)">
+                                    <mat-icon *ngIf="role.concernsDivingCertificate" class="chip-icon">
+                                        workspace_premium
+                                    </mat-icon>
+                                    {{role.name}}
+                                </mat-chip>
+                            </ng-container>
+                            <mat-chip class="clickable-chip" *ngIf="authorized" color="accent" selected
+                                [routerLink]="['/members', member.id]" routerLinkActive="active">
+                                Beheer
+                            </mat-chip>
+                        </mat-chip-list>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="button">
+                    <mat-header-cell *matHeaderCellDef class="right"></mat-header-cell>
+                    <mat-cell *matCellDef="let member" class="right">
+                        <button mat-icon-button color="accent" [routerLink]="['/members', member.id]"
+                            routerLinkActive="active" matTooltip="Beheer rollen" matTooltipPosition="left">
+                            <mat-icon>engineering</mat-icon>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="columns"></mat-header-row>
+                <mat-row matRipple *matRowDef="let member; columns: columns;" (click)="selection.toggle(member)">
+                </mat-row>
+            </mat-table>
+            <app-action-menu>                
+                <app-action-menu-button color="warn" text="Lid verwijderen" 
+                    (cclick)="removeSelectedMember()" *ngIf="memberManager"
+                    [disabled]="selection.selected.length != 1">
+                    delete
+                </app-action-menu-button>
+                <app-action-menu-button text="Lid aanpassen" (cclick)="editSelectedMember()" *ngIf="memberManager"
+                    [disabled]="selection.selected.length != 1">
+                    edit
+                </app-action-menu-button>
+                <app-action-menu-button text="Nieuw lid" link="/register" *ngIf="memberManager">
+                    person_add
+                </app-action-menu-button>
+                <app-action-menu-button text="Email" [disabled]="selection.selected.length <= 0"
+                    (cclick)="openEmailDialog()" [matBadge]="selection.selected.length"
+                    [matBadgeHidden]="selection.selected.length <= 0">
+                    email
+                </app-action-menu-button>
+            </app-action-menu>
+        </ng-container>
+        <ng-template #loading>
+            <div class="loading-container">
+                <mat-spinner></mat-spinner>
+            </div>
+        </ng-template>
+    </div>
+</div>

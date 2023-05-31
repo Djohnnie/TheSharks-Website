@@ -1,0 +1,29 @@
+input[type="file"] {
+    display: none;
+}
+
+.avatar-profile {
+    border-radius: 50%;
+    width: 10rem;
+    height: 10rem;
+    align-self: center;
+    object-fit: cover;
+}
+
+.avatar-section {
+    position: relative;
+    align-self: center;
+    gap: 1rem;
+}
+
+.avatar-section button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+}
+
+.column-margin {
+    margin-bottom: 6rem;
+}

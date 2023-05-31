@@ -1,0 +1,131 @@
+/* You can add global styles to this file, and also import other style files */
+
+@use "./shared.scss";
+@use "./theme.scss";
+@import "bulma/sass/grid/columns";
+@import "bulma/sass/helpers/spacing";
+
+html,
+body {
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.container {
+    width: 50%;
+    margin: auto;
+}
+
+.stack {
+    display: flex;
+    flex-direction: column;
+}
+
+.stack-with-spacing {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.level {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.error {
+    color: #F44336;
+}
+
+.loading-container {
+    position: absolute;
+    z-index: 10;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+}
+
+.sb-error {
+    background-color: #F44336;
+    color: white;
+}
+
+.sb-success {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.stepper {
+    background: transparent;
+}
+
+figure {
+    margin: auto;
+    margin-block: auto;
+    margin-inline: auto;
+}
+
+.table table {
+    border: 1px lightgray solid;
+    border-collapse: collapse;
+    border-spacing: 0;
+
+    th,
+    td {
+        border: 1px lightgray solid;
+        min-width: 2rem;
+        text-align: left;
+        padding: 0.4rem;
+    }
+
+    th {
+        background: whitesmoke;
+    }
+}
+
+p {
+    img {
+        max-width: 100%;
+    }
+}
+
+.image,
+.image_resized {
+
+    img {
+        max-width: 100%;
+    }
+}
+
+
+.sticky {
+    position: sticky;
+    bottom: 0;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.clickable:hover {
+    background: whitesmoke;
+}
+
+.card-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.avatar-icon {
+    width: 2rem;
+    height: 2rem;
+    object-fit: cover;
+    border-radius: 50%;
+}

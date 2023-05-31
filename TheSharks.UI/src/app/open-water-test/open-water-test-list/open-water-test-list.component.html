@@ -1,0 +1,59 @@
+<div class="columns m-2">
+    <div [class]="!(isHandset$ | async) ? 'column is-8 is-offset-2' : 'column is-8 is-offset-2 column-margin'">
+        <h1>OPENWATERPROEVEN</h1>
+        <ng-container *ngIf="!loading && dataSource as openWaterTests;">
+            <mat-table [dataSource]="openWaterTests" class="mat-elevation-z3">
+                <ng-container matColumnDef="select">
+                    <mat-header-cell class="checkbox-cell" *matHeaderCellDef>
+                        <mat-checkbox (change)="$event ? masterToggle() : null"
+                            [checked]="selection.hasValue() && isAllSelected()"
+                            [indeterminate]="selection.hasValue() && !isAllSelected()">
+                        </mat-checkbox>
+                    </mat-header-cell>
+                    <mat-cell class="checkbox-cell" *matCellDef="let row">
+                        <mat-checkbox (click)="$event.stopPropagation()"
+                            (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
+                        </mat-checkbox>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="title">
+                    <mat-header-cell *matHeaderCellDef>Naam</mat-header-cell>
+                    <mat-cell *matCellDef="let test">
+                        <span>
+                            {{test.title}}
+                        </span>
+                        <mat-chip-list>
+                            <ng-container *ngIf="!(isHandset$ | async)">
+                                <mat-chip class="clickable-chip">
+                                    <mat-icon *ngIf="test.diveCertificate" class="chip-icon">
+                                        assignment
+                                    </mat-icon>
+                                    {{test.diveCertificate}}
+                                </mat-chip>
+                            </ng-container>
+                        </mat-chip-list>
+                    </mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="columns"></mat-header-row>
+                <mat-row matRipple *matRowDef="let test; columns: columns;" (click)="openContentDialog(test)">                    
+                </mat-row>
+            </mat-table>
+            <app-action-menu>
+                <app-action-menu-button [text]="selection.selected.length > 1 ? 'Proeven verwijderen' : 'Proef verwijderen'" (cclick)="removeSelectedTests()" *ngIf="authorized"
+                    [disabled]="selection.selected.length == 0">
+                    delete
+                </app-action-menu-button>
+                <app-action-menu-button text="Proef aanpassen" (cclick)="editSelectedTest()" *ngIf="authorized"
+                    [disabled]="selection.selected.length != 1">
+                    edit
+                </app-action-menu-button>
+                <app-action-menu-button text="Nieuwe proef" link="/open-water-tests/add" *ngIf="authorized">
+                    add_circle
+                </app-action-menu-button>
+            </app-action-menu>
+        </ng-container>
+        <div *ngIf="loading" class="loading-container">
+            <mat-spinner></mat-spinner>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,9 @@
+<h1 mat-dialog-title>Lid verwijderen</h1>
+<mat-dialog-content>
+    <p>Ben je zeker dat je dit lid wilt verwijderen?</p>
+    <p>Deze actie kan niet ongedaan worden gemaakt!</p>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-dialog-close mat-button>Annuleren</button>
+    <button mat-flat-button color="warn" cdkFocusInitial (click)="onDelete()">Verwijderen</button>
+</mat-dialog-actions>

@@ -1,0 +1,160 @@
+<div class="columns m-0">
+    <div class="column is-8 is-offset-2 p-0">
+        <mat-stepper #stepper labelPosition="bottom" class="stepper" linear (selectionChange)="onStepChanged($event)">
+            <mat-step [stepControl]="type">
+                <h2>Type activiteit</h2>
+                <div class="stack">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Type</mat-label>
+                        <mat-select #typePicker matNativeControl [formControl]="type">
+                            <mat-option value="dive">Duik</mat-option>
+                            <mat-option value="event">Evenement</mat-option>
+                            <mat-option value="monitorboard">Monitorsraad</mat-option>
+                            <mat-option value="boardmeeting">Bestuursvergadering</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div class="level">
+                        <button mat-flat-button matStepperNext color="accent">
+                            <mat-icon>chevron_right</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </mat-step>
+            <mat-step [stepControl]="activityForm">
+                <form [formGroup]="activityForm" class="stack">
+                    <h2>Activiteit info</h2>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Titel</mat-label>
+                        <input matInput type="text" formControlName="title" maxlength="120">
+                        <mat-icon matSuffix>title</mat-icon>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Datum</mat-label>
+                        <input matInput formControlName="date" [matDatepicker]="picker" [min]="minDate">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Locatie</mat-label>
+                        <input matInput type="text" formControlName="location" maxlength="40">
+                        <mat-icon matSuffix>place</mat-icon>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Locatielink</mat-label>
+                        <input matInput type="text" formControlName="locationLink" maxlength="512">
+                        <mat-icon matSuffix>my_location</mat-icon>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Info</mat-label>
+                        <textarea matInput formControlName="info" maxlength="500"></textarea>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Leden info</mat-label>
+                        <textarea matInput formControlName="memberInfo" maxlength="500"></textarea>
+                    </mat-form-field>
+
+                    <div class="mb-4">
+                        <button type="button" mat-stroked-button color="accent"
+                            (click)="chooseResponsible()">Verantwoordelijke</button>
+                        <span class="error ml-2" *ngIf="!activityForm.get('responsible')?.valid">Geen
+                            verantwoordelijke</span>
+                        <span class="ml-2" *ngIf="activityForm.get('responsible')?.valid">{{responsibleName}}</span>
+                    </div>
+
+                    <input id="responsible" type="text" formControlName="responsible">
+
+                    <mat-checkbox class="checkbox-spacing" formControlName="necessarySubscription">
+                        Leden kunnen zich inschrijven
+                    </mat-checkbox>
+                    <div class="level mt-4">
+                        <button mat-stroked-button matStepperPrevious color="accent">
+                            <mat-icon>chevron_left</mat-icon>
+                        </button>
+                        <button mat-flat-button matStepperNext color="accent">
+                            <mat-icon>chevron_right</mat-icon>
+                        </button>
+                    </div>
+                </form>
+            </mat-step>
+            <mat-step>
+                <ng-container [ngSwitch]="type.value">
+                    <form *ngSwitchCase="'dive'" [formGroup]="diveForm" class="stack">
+                        <h2>Duik info</h2>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Vertrek</mat-label>
+                            <input matNativeControl type="time" formControlName="departure">
+                        </mat-form-field>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Briefing</mat-label>
+                            <input matNativeControl type="time" formControlName="briefingTime">
+                        </mat-form-field>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Getij</mat-label>
+                            <input matInput type="text" formControlName="tide" maxlength="20">
+                        </mat-form-field>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Te water</mat-label>
+                            <input matNativeControl type="time" formControlName="atWater">
+                        </mat-form-field>
+                    </form>
+                    <form *ngSwitchCase="'event'" [formGroup]="eventForm" class="stack">
+                        <h2>Evenement info</h2>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Vertrek</mat-label>
+                            <input matNativeControl type="time" formControlName="departure">
+                        </mat-form-field>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Starttijd</mat-label>
+                            <input matNativeControl type="time" formControlName="startTime">
+                        </mat-form-field>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Eindtijd</mat-label>
+                            <input matNativeControl type="time" formControlName="endTime">
+                        </mat-form-field>
+                    </form>
+                    <form *ngSwitchDefault [formGroup]="meetingForm" class="stack">
+                        <h2 *ngIf="type.value === 'boardmeeting'">
+                            Bestuursvergadering info
+                        </h2>
+                        <h2 *ngIf="type.value === 'monitorboard'">
+                            Monitorsraad info
+                        </h2>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Starttijd</mat-label>
+                            <input matNativeControl type="time" formControlName="startTime">
+                        </mat-form-field>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Eindtijd</mat-label>
+                            <input matNativeControl type="time" formControlName="endTime">
+                        </mat-form-field>
+                    </form>
+                    <div class="level">
+                        <button mat-stroked-button matStepperPrevious color="accent">
+                            <mat-icon>chevron_left</mat-icon>
+                        </button>
+                        <button mat-flat-button matStepperNext color="accent">
+                            <mat-icon>chevron_right</mat-icon>
+                        </button>
+                    </div>
+                </ng-container>
+            </mat-step>
+            <mat-step>
+                <h2>Bevestigen</h2>
+                <ng-template matStepContent>
+                    <div class="stack">
+                        <app-activity-details-only [activity]="tempActivity"></app-activity-details-only>
+                        <div class="level mt-4">
+                            <button mat-stroked-button matStepperPrevious color="accent">
+                                <mat-icon>chevron_left</mat-icon>
+                            </button>
+                            <button mat-flat-button matStepperNext color="accent" (click)="onSubmit()"
+                                matTooltip="Activiteit aanmaken">
+                                <mat-icon>check</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </ng-template>
+            </mat-step>
+        </mat-stepper>
+    </div>
+</div>

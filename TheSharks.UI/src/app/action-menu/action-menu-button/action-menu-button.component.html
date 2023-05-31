@@ -1,0 +1,7 @@
+<span class="tip p-2 mr-4">{{text}}</span>
+<button mat-fab [disabled]="disabled" [color]="color" (click)="cclick.emit($event)" [routerLink]="link"
+    [routerLinkActive]="link ? 'active' : ''">
+    <mat-icon>
+        <ng-content></ng-content>
+    </mat-icon>
+</button>
